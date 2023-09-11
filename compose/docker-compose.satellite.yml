@@ -28,12 +28,12 @@ volumes:
     driver: local
 
 services:
-  hivemind_voice_satellite:
+  hivemind_satellite:
     <<: *podman
-    container_name: hivemind_voice_satellite
-    hostname: hivemind_voice_satellite
+    container_name: hivemind_satellite
+    hostname: hivemind_satellite
     restart: unless-stopped
-    image: smartgic/hivemind-voice-satellite:${VERSION}
+    image: smartgic/hivemind-satellite:${VERSION}
     logging: *default-logging
     pull_policy: always
     environment:
