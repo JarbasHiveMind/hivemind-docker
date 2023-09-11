@@ -12,7 +12,7 @@ LABEL org.opencontainers.image.documentation="https://jarbashivemind.github.io/H
 LABEL org.opencontainers.image.source="https://github.com/JarbasHiveMind/hivemind-docker"
 LABEL org.opencontainers.image.vendor="HiveMind"
 
-ARG USER=hivemine
+ARG USER=hivemind
 
 COPY files/client.conf /etc/pulse/client.conf
 
