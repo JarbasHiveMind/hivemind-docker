@@ -38,7 +38,7 @@ services:
     pull_policy: always
     environment:
       PULSE_SERVER: unix:${XDG_RUNTIME_DIR}/pulse/native
-      PULSE_COOKIE: /home/${OVOS_USER}/.config/pulse/cookie
+      PULSE_COOKIE: /home/${HIVEMIND_USER}/.config/pulse/cookie
       TZ: $TZ
       VOICE_SAT_KEY: $VOICE_SAT_KEY
       VOICE_SAT_PASSWORD: $VOICE_SAT_PASSWORD
@@ -48,10 +48,10 @@ services:
     devices:
       - /dev/snd
     volumes:
-      - ~/.config/pulse/cookie:/home/${OVOS_USER}/.config/pulse/cookie:ro
-      - ${OVOS_CONFIG_FOLDER}:/home/${OVOS_USER}/.config/mycroft:ro
-      - ovos_tts_cache:/home/${OVOS_USER}/.cache/mycroft
-      - ovos_listener_records:/home/${OVOS_USER}/.local/share/mycroft/listener
-      - ovos_models:/home/${OVOS_USER}/.local/share/precise-lite
+      - ~/.config/pulse/cookie:/home/${HIVEMIND_USER}/.config/pulse/cookie:ro
+      - ${OVOS_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/mycroft:ro
+      - ovos_tts_cache:/home/${HIVEMIND_USER}/.cache/mycroft
+      - ovos_listener_records:/home/${HIVEMIND_USER}/.local/share/mycroft/listener
+      - ovos_models:/home/${HIVEMIND_USER}/.local/share/precise-lite
       - ${XDG_RUNTIME_DIR}/pipewire-0:${XDG_RUNTIME_DIR}/pipewire-0:ro
       - ${XDG_RUNTIME_DIR}/pulse:${XDG_RUNTIME_DIR}/pulse:ro
