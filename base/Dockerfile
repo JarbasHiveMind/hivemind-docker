@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND noninteractive
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update \
-  && apt-get install -y git curl python3-minimal python3-pip python3-venv \
+  && apt-get install -y --no-install-recommends git curl python3-minimal python3-pip python3-venv vim \
   && c_rehash \
   && useradd --no-log-init $USER -m -c "HiveMind user" \
   && python3 -m venv /home/${USER}/.venv \
@@ -32,5 +32,6 @@ RUN apt-get update \
 
 USER $USER
 
+ENV IS_OVOS_CONTAINER "true"
 ENV PATH /home/${USER}/.venv/bin:$PATH
 ENV VIRTUAL_ENV /home/${USER}/.venv
