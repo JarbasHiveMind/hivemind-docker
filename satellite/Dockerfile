@@ -25,7 +25,7 @@ COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update \
-    && apt-get install -o Dpkg::Options::="--force-confold" -y python3-dev build-essential  libasound2-dev libportaudio2 portaudio19-dev \
+    && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends python3-dev build-essential libasound2-dev libportaudio2 portaudio19-dev libpulse-dev \
     && pip3 install -f 'https://whl.smartgic.io/' tflite_runtime \
     && if [ "${ALPHA}" == "true" ]; then \
     pip3 install -U -r /tmp/requirements.txt --pre; \
