@@ -34,7 +34,7 @@ RUN apt-get update \
     fi \
     && mkdir -p /home/${USER}/.config/hivemind,.cache/mycroft,.local/share/{mycroft/listener,.precise-lite/mycroft} \
     && chown ${USER}:${USER} -R /home/${USER} \
-    && apt-get --purge remove python3-dev build-essential libasound2-dev portaudio19-dev -y \
+    && apt-get --purge remove python3-dev build-essential libasound2-dev portaudio19-dev libpulse-dev -y \
     && apt-get --purge autoremove -y \
     && apt-get clean \
     && rm -rf ${HOME}/.cache/pip /var/lib/apt /var/log/{apt,dpkg.log} /tmp/requirements.txt
