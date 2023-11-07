@@ -32,7 +32,7 @@ RUN apt-get update \
     else \
     pip3 install -r /tmp/requirements.txt; \
     fi \
-    && mkdir -p /home/${USER}/{.config/hivemind,.cache/mycroft,.local/share/precise-lite}/mycroft \
+    && mkdir -p /home/${USER}/.config/hivemind,.cache/mycroft,.local/share/{mycroft/listener,.precise-lite/mycroft} \
     && chown ${USER}:${USER} -R /home/${USER} \
     && apt-get --purge remove python3-dev build-essential libasound2-dev portaudio19-dev -y \
     && apt-get --purge autoremove -y \
