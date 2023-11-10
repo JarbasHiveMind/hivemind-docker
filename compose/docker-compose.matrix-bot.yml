@@ -1,0 +1,37 @@
+---
+version: "3.9"
+
+x-podman:
+  &podman
+  userns_mode: keep-id
+  security_opt:
+    - "label=disable"
+
+x-logging:
+  &default-logging
+  driver: json-file
+  options:
+    mode: non-blocking
+    max-buffer-size: 4m
+    max-size: "200m"
+    max-file: "1"
+
+services:
+  hivemind_matrix_bot:
+    <<: *podman
+    container_name: hivemind_matrix_bot
+    hostname: hivemind_matrix_bot
+    restart: unless-stopped
+    image: smartgic/hivemind-matrix-bot:${VERSION}
+    logging: *default-logging
+    pull_policy: always
+    environment:
+      TZ: $TZ
+      MATRIX_BOT_NAME: $MATRIX_BOT_NAME
+      MATRIX_HOST: $MATRIX_HOST
+      MATRIX_ROOM: $MATRIX_ROOM
+      MATRIX_TOKEN: $MATRIX_TOKEN
+      VOICE_SAT_KEY: $VOICE_SAT_KEY
+      VOICE_SAT_PASSWORD: $VOICE_SAT_PASSWORD
+      VOICE_SAT_HOST: $VOICE_SAT_HOST
+      VOICE_SAT_PORT: $VOICE_SAT_PORT
