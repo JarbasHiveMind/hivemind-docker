@@ -22,7 +22,6 @@ RUN if [ "${ALPHA}" == "true" ]; then \
   else \
   pip3 install -r /tmp/requirements.txt; \
   fi \
-  && mkdir -p ${HOME}/.config/hivemind ${HOME}/.local/share/hivemind \
   && rm -rf ${HOME}/.cache /tmp/requirements.txt
 
 ENTRYPOINT hivemind-webchat
