@@ -1,0 +1,31 @@
+---
+version: "3.9"
+
+x-podman:
+  &podman
+  userns_mode: keep-id
+  security_opt:
+    - "label=disable"
+
+x-logging:
+  &default-logging
+  driver: json-file
+  options:
+    mode: non-blocking
+    max-buffer-size: 4m
+    max-size: "200m"
+    max-file: "1"
+
+services:
+  hivemind_webchat:
+    <<: *podman
+    container_name: hivemind_webchat
+    hostname: hivemind_webchat
+    restart: unless-stopped
+    image: smartgic/hivemind-webchat:${VERSION}
+    logging: *default-logging
+    pull_policy: always
+    environment:
+      TZ: $TZ
+    ports:
+      - "9090:9090"    
