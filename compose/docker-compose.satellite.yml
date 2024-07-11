@@ -55,3 +55,21 @@ services:
       - ovos_models:/home/${HIVEMIND_USER}/.local/share/precise-lite
       - ${XDG_RUNTIME_DIR}/pipewire-0:${XDG_RUNTIME_DIR}/pipewire-0:ro
       - ${XDG_RUNTIME_DIR}/pulse:${XDG_RUNTIME_DIR}/pulse:ro
+
+  hivemind_cli:
+    <<: *podman
+    container_name: hivemind_cli
+    hostname: hivemind_cli
+    restart: unless-stopped
+    image: docker.io/smartgic/hivemind-cli:${VERSION}
+    logging: *default-logging
+    pull_policy: always
+    tty: true
+    environment:
+      TZ: $TZ
+    network_mode: host
+    volumes:
+      - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
+      - ${HIVEMIND_SHARE_FOLDER}:/home/${HIVEMIND_USER}/.local/share/hivemind:z
+    depends_on:
+      - hivemind_satellite
