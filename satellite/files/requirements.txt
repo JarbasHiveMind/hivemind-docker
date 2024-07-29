@@ -1,5 +1,6 @@
 git+https://github.com/JarbasHiveMind/HiveMind-voice-sat.git
 git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git
+ovos-audio-plugin-mpv
 ovos-audio-plugin-simple
 ovos-classifiers
 ovos-microphone-plugin-sounddevice
