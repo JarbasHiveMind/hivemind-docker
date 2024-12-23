@@ -1,3 +1,4 @@
-git+https://github.com/JarbasHiveMind/HiveMind-core.git
-git+https://github.com/JarbasHiveMind/HiveMind-presence.git
-git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git
+hivemind-bus-client
+hivemind-core
+hivemind-presence
+setuptools

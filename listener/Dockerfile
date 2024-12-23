@@ -18,9 +18,9 @@ ARG USER=hivemind
 COPY --chown=${USER}:${USER} files/requirements.txt /tmp/requirements.txt
 
 RUN if [ "${ALPHA}" == "true" ]; then \
-  pip3 install -r /tmp/requirements.txt --pre; \
+  pip3 --no-cache-dir install -r /tmp/requirements.txt --pre; \
   else \
-  pip3 install -r /tmp/requirements.txt; \
+  pip3 --no-cache-dir install -r /tmp/requirements.txt; \
   fi \
   && mkdir -p ${HOME}/.config/hivemind ${HOME}/.local/share/hivemind \
   && rm -rf ${HOME}/.cache /tmp/requirements.txt

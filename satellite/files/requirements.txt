@@ -1,5 +1,5 @@
-git+https://github.com/JarbasHiveMind/HiveMind-voice-sat.git
-git+https://github.com/JarbasHiveMind/hivemind_websocket_client.git
+hivemind-voice-sat
+hivemind-bus-client
 ovos-audio-plugin-mpv
 ovos-audio-plugin-simple
 ovos-classifiers
@@ -7,8 +7,8 @@ ovos-microphone-plugin-sounddevice
 ovos-PHAL
 ovos-PHAL-plugin-alsa
 ovos-PHAL-plugin-ipgeo
-git+https://github.com/OpenVoiceOS/ovos-stt-plugin-chromium.git
-git+https://github.com/OpenVoiceOS/ovos-tts-plugin-polly.git
+ovos-stt-plugin-chromium
+ovos-tts-plugin-polly
 ovos-vad-plugin-webrtcvad
 ovos-ww-plugin-openwakeword
 ovos-ww-plugin-precise-lite

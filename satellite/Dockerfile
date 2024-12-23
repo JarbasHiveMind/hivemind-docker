@@ -26,18 +26,18 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update \
     && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends python3-dev build-essential libasound2-dev libportaudio2 portaudio19-dev libpulse-dev mpv \
-    && pip3 install -f 'https://whl.smartgic.io/' tflite_runtime \
+    && pip3 install --no-cache-dir -f 'https://whl.smartgic.io/' tflite_runtime \
     && if [ "${ALPHA}" == "true" ]; then \
-    pip3 install -U -r /tmp/requirements.txt --pre; \
+    pip3 install --no-cache-dir -r /tmp/requirements.txt --pre; \
     else \
-    pip3 install -r /tmp/requirements.txt; \
+    pip3 install --no-cache-dir -r /tmp/requirements.txt; \
     fi \
     && mkdir -p /home/${USER}/{.config/hivemind,.cache/mycroft,.local/share/{mycroft/listener,precise-lite/mycroft}} \
     && chown ${USER}:${USER} -R /home/${USER} \
     && apt-get --purge remove python3-dev build-essential libasound2-dev portaudio19-dev libpulse-dev -y \
     && apt-get --purge autoremove -y \
     && apt-get clean \
-    && rm -rf ${HOME}/.cache/pip /var/lib/apt /var/log/{apt,dpkg.log} /tmp/requirements.txt
+    && rm -rf ${HOME}/.cache /var/lib/apt /var/log/{apt,dpkg.log} /tmp/requirements.txt
 
 USER $USER
 
