@@ -16,14 +16,15 @@ ARG ALPHA=false
 ARG USER=hivemind
 
 COPY --chown=${USER}:${USER} files/requirements.txt /tmp/requirements.txt
+COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN if [ "${ALPHA}" == "true" ]; then \
   pip3 install --no-cache-dir -r /tmp/requirements.txt --pre; \
   else \
   pip3 install --no-cache-dir -r /tmp/requirements.txt; \
   fi \
-  && rm -rf ${HOME}/.cache /tmp/requirements.txt
+  && rm -rf /tmp/requirements.txt
 
-ENTRYPOINT HiveMind-matrix run --key "$VOICE_SAT_KEY" --password "$VOICE_SAT_PASSWORD" --host "$VOICE_SAT_HOST" --port "$VOICE_SAT_PORT" --botname "$MATRIX_BOT_NAME" --matrixtoken "$MATRIX_TOKEN" --matrixhost "$MATRIX_HOST" --room "$MATRIX_ROOM"
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 
-WORKDIR /home/${USER}
+WORKDIR "/home/${USER}"
