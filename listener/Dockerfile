@@ -16,15 +16,18 @@ ARG ALPHA=false
 ARG USER=hivemind
 
 COPY --chown=${USER}:${USER} files/requirements.txt /tmp/requirements.txt
+COPY --chown=${USER}:${USER} files/entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN if [ "${ALPHA}" == "true" ]; then \
   pip3 --no-cache-dir install -r /tmp/requirements.txt --pre; \
   else \
   pip3 --no-cache-dir install -r /tmp/requirements.txt; \
   fi \
-  && mkdir -p ${HOME}/.config/hivemind ${HOME}/.local/share/hivemind \
-  && rm -rf ${HOME}/.cache /tmp/requirements.txt
+  && mkdir -p ${HOME}/.config/{hivemind,hivemind-core} ${HOME}/.local/{hivemind,share/hivemind} \
+  && rm -rf /tmp/requirements.txt
 
-ENTRYPOINT ["hivemind-core", "listen"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /home/${USER}
