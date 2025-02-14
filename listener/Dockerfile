@@ -25,6 +25,8 @@ RUN if [ "${ALPHA}" == "true" ]; then \
   && mkdir -p ${HOME}/.config/hivemind ${HOME}/.local/share/hivemind \
   && rm -rf ${HOME}/.cache /tmp/requirements.txt
 
+COPY --chown=${USER}:${USER} files/entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /home/${USER}
