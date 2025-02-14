@@ -1,9 +1,6 @@
 #!/bin/bash
 
 # Install plugins via pip command when a setup.py exists
-#!/bin/bash
-
-# Install plugins via pip command when a setup.py exists
 mkdir -p ~/.config/hivemind ~/.local/state/hivemind
 hivemind_list=~/.config/hivemind/hivemind.list
 hivemind_list_state=~/.local/state/hivemind/hivemind.state
@@ -21,7 +18,6 @@ fi
 # Clear Python cache
 rm -rf ~/.cache/pip
 
-# Run hivemind-core
 # Run hivemind-core
 if ! hivemind-core listen; then
     echo "Error: Failed to start hivemind-core"
