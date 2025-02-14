@@ -4,9 +4,9 @@
 #!/bin/bash
 
 # Install plugins via pip command when a setup.py exists
-mkdir -p ~/.config/mycroft ~/.local/state/mycroft
-hivemind_list=~/.config/mycroft/hivemind.list
-hivemind_list_state=~/.local/state/mycroft/hivemind.state
+mkdir -p ~/.config/hivemind ~/.local/state/hivemind
+hivemind_list=~/.config/hivemind/hivemind.list
+hivemind_list_state=~/.local/state/hivemind/hivemind.state
 if test -f "$hivemind_list"; then
     if ! diff -q -B <(grep -vE '^\s*(#|$)' "$hivemind_list") <(grep -vE '^\s*(#|$)' "$hivemind_list_state" 2>/dev/null) &>/dev/null; then
         if pip3 install --no-cache-dir -r "$hivemind_list"; then
