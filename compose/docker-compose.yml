@@ -37,7 +37,7 @@ services:
     volumes:
       - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
       - ${HIVEMIND_SHARE_FOLDER}:/home/${HIVEMIND_USER}/.local/share/hivemind:z
-      - hivemind_local_state:/home/${OVOS_USER}/.local/state/hivemind
+      - hivemind_local_state:/home/${HIVEMIND_USER}/.local/state/hivemind
 
   hivemind_cli:
     <<: *podman
