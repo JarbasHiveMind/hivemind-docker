@@ -1,6 +1,5 @@
 hivemind-bus-client
 hivemind-core
-hivemind-presence
 hivemind-http-protocol
 hivemind-audio-binary-protocol
 hivemind-redis-database
