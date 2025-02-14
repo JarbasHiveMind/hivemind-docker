@@ -30,8 +30,9 @@ services:
       TZ: $TZ
     network_mode: host
     volumes:
+      # NOTE: server.conf goes into hivemind-core, identity.json goes into hivemind
       - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
-      - ${HIVEMIND_SERVER_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind-core:z
+      - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind-core:z
       - ${HIVEMIND_SHARE_FOLDER}:/home/${HIVEMIND_USER}/.local/share/hivemind:z
 
   hivemind_cli:
