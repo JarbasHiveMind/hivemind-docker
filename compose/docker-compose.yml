@@ -16,6 +16,11 @@ x-logging:
     max-size: "200m"
     max-file: "1"
 
+volumes:
+  hivemind_local_state:
+    name: ovos_local_state
+    driver: local
+    
 services:
   hivemind_listener:
     <<: *podman
@@ -32,6 +37,7 @@ services:
     volumes:
       - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
       - ${HIVEMIND_SHARE_FOLDER}:/home/${HIVEMIND_USER}/.local/share/hivemind:z
+      - hivemind_local_state:/home/${OVOS_USER}/.local/state/hivemind
 
   hivemind_cli:
     <<: *podman
