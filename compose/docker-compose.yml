@@ -18,7 +18,7 @@ x-logging:
 
 volumes:
   hivemind_local_state:
-    name: ovos_local_state
+    name: hivemind_local_state
     driver: local
     
 services:
