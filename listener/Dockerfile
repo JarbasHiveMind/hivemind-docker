@@ -25,6 +25,6 @@ RUN if [ "${ALPHA}" == "true" ]; then \
   && mkdir -p ${HOME}/.config/hivemind ${HOME}/.local/share/hivemind \
   && rm -rf ${HOME}/.cache /tmp/requirements.txt
 
-ENTRYPOINT ["hivemind-core", "listen"]
+ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /home/${USER}
