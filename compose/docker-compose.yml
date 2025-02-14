@@ -31,6 +31,7 @@ services:
     network_mode: host
     volumes:
       - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
+      - ${HIVEMIND_SERVER_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind-core:z
       - ${HIVEMIND_SHARE_FOLDER}:/home/${HIVEMIND_USER}/.local/share/hivemind:z
 
   hivemind_cli:
