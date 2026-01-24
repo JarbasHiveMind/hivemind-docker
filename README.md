@@ -55,6 +55,32 @@ This command will:
 
 Grab a coffee—or a pint of honey—while Docker works its magic.
 
+## Build Images (Buildx Bake)
+
+Builds are handled via Docker Buildx Bake (`docker-bake.hcl` and `scripts/bake.sh`). Direct
+`docker build` usage is not supported because base image wiring relies on Bake contexts.
+
+### Quick examples
+
+- Local build (amd64 only, loads to local Docker): `./scripts/bake.sh --load --no-push`
+- Multi-arch publish (default registry/tag): `./scripts/bake.sh`
+- Build a subset: `./scripts/bake.sh -T stack` or `./scripts/bake.sh -T services`
+- Inspect resolved Bake config: `./scripts/bake.sh --print`
+- Disable registry cache: `./scripts/bake.sh --no-cache-from --load --no-push`
+
+### Configuration
+
+Defaults are defined in `docker-bake.hcl` and `scripts/bake.sh`:
+
+- `REGISTRY` (default `docker.io/smartgic`)
+- `TAG` and `VERSION` (default `alpha`)
+- `LATEST_TAG` (default `latest`, only applied when `TAG=stable`)
+- `CHANNEL` (default `alpha`)
+- `PLATFORMS` (default `linux/amd64,linux/arm64`)
+- `UV_PRERELEASE` (default `allow`)
+- `ENSURE_BINFMT` (default `auto`, set `true` to force or `false` to skip)
+- `BUILDER` (default `hivemind-bake`)
+
 ## Troubleshooting
 
 1. **Issue: Container won’t start.**
@@ -80,5 +106,3 @@ We’re not responsible for:
 - Containers running away with your CPU.
 
 Enjoy HiveMind-Docker responsibly. And remember: with great power comes great containerization!
-
-

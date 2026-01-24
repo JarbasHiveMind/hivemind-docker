@@ -1,0 +1,37 @@
+# VCS
+.git
+.gitignore
+
+# Editor/IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# Build artifacts
+build/
+dist/
+
+# Env
+.env
+.env.*
+.venv/
+venv/
+
+# Misc
+*.log
+.cache/
+tmp/
