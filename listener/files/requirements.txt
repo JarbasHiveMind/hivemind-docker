@@ -1,6 +1,9 @@
-hivemind-bus-client
-hivemind-core
+hivemind-bus-client @ git+https://github.com/JarbasHiveMind/hivemind-websocket-client.git@release-0.7.0a2
+hivemind-plugin-manager @ git+https://github.com/thalovant/hivemind-plugin-manager.git@feat/generic-policy-protocol
+hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@dev
+hivemind-core @ git+https://github.com/thalovant/HiveMind-core.git@feat/policy-protocol-hooks
 hivemind-http-protocol
 hivemind-audio-binary-protocol
-hivemind-redis-database
+hivemind-redis-database @ git+https://github.com/thalovant/hivemind-redis-database.git@preserve-client-metadata
+hivemind-intent-quota-plugin[redis] @ git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@quota-subjects
 setuptools
