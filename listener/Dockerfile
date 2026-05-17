@@ -39,12 +39,21 @@ SHELL ["/bin/bash", "-c"]
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/root/.cache/uv,sharing=locked \
+    --mount=type=secret,id=github_token,required=false \
     apt-get update \
  && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends --no-install-suggests \
       build-essential python3-dev \
  && PRERELEASE="${UV_PRERELEASE}" \
  && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
+ && if [ -f /run/secrets/github_token ]; then \
+      GITHUB_TOKEN="$(cat /run/secrets/github_token)" \
+      && git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"; \
+    fi \
  && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+ && if [ -n "${GITHUB_TOKEN:-}" ]; then \
+      git config --global --remove-section url."https://x-access-token:${GITHUB_TOKEN}@github.com/" || true; \
+    fi \
+ && rm -f /root/.gitconfig \
  && mkdir -p \
       "/home/${USER}/.config/hivemind" \
       "/home/${USER}/.config/hivemind-core" \
