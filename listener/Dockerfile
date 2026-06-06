@@ -30,6 +30,7 @@ ARG UV_PRERELEASE=never
 ARG USER=hivemind
 
 COPY files/requirements.txt /tmp/requirements.txt
+COPY files/agent-requirements.txt /tmp/agent-requirements.txt
 COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 USER root
@@ -58,6 +59,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       --reinstall-package hivemind-audio-binary-protocol \
       --reinstall-package hivemind-redis-database \
       -r /tmp/requirements.txt \
+ && uv pip install --prerelease="${PRERELEASE}" --no-deps \
+      --reinstall-package ovos-bus-client \
+      --reinstall-package hivemind-ovos-agent-plugin \
+      -r /tmp/agent-requirements.txt \
  && if [ -n "${GITHUB_TOKEN:-}" ]; then \
       git config --global --remove-section url."https://x-access-token:${GITHUB_TOKEN}@github.com/" || true; \
     fi \
