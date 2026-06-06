@@ -49,7 +49,15 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       GITHUB_TOKEN="$(cat /run/secrets/github_token)" \
       && git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"; \
     fi \
- && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+ && uv pip install --prerelease="${PRERELEASE}" \
+      --reinstall-package hivemind-bus-client \
+      --reinstall-package hivemind-plugin-manager \
+      --reinstall-package hivemind-websocket-protocol \
+      --reinstall-package hivemind-core \
+      --reinstall-package hivemind-http-protocol \
+      --reinstall-package hivemind-audio-binary-protocol \
+      --reinstall-package hivemind-redis-database \
+      -r /tmp/requirements.txt \
  && if [ -n "${GITHUB_TOKEN:-}" ]; then \
       git config --global --remove-section url."https://x-access-token:${GITHUB_TOKEN}@github.com/" || true; \
     fi \
