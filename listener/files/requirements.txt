@@ -1,6 +1,7 @@
 hivemind-bus-client
 git+https://github.com/thalovant/hivemind-plugin-manager.git@e63513d
 hivemind-core==4.6.0a2
+git+https://github.com/thalovant/hivemind-websocket-protocol.git@4d2f0ef09db8045c70eaeb48c44ffa3df4e2e588
 hivemind-http-protocol
 hivemind-audio-binary-protocol
 hivemind-redis-database==0.1.0a2
