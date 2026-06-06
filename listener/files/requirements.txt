@@ -1,5 +1,5 @@
 hivemind-bus-client
-hivemind-plugin-manager==0.7.0a1
+git+https://github.com/thalovant/hivemind-plugin-manager.git@e63513d
 hivemind-core==4.6.0a2
 hivemind-http-protocol
 hivemind-audio-binary-protocol
