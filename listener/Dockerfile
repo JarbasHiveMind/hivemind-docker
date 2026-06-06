@@ -39,12 +39,24 @@ SHELL ["/bin/bash", "-c"]
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/root/.cache/uv,sharing=locked \
+    --mount=type=secret,id=github_token,required=false \
     apt-get update \
  && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends --no-install-suggests \
       build-essential python3-dev \
  && PRERELEASE="${UV_PRERELEASE}" \
  && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
+ && if [ -s /run/secrets/github_token ]; then \
+      printf '%s\n' \
+        '#!/bin/sh' \
+        'case "$1" in' \
+        '  *Username*) echo x-access-token ;;' \
+        '  *Password*) cat /run/secrets/github_token ;;' \
+        'esac' > /tmp/git-askpass \
+      && chmod 0700 /tmp/git-askpass \
+      && export GIT_ASKPASS=/tmp/git-askpass GIT_TERMINAL_PROMPT=0; \
+    fi \
  && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+ && rm -f /tmp/git-askpass \
  && mkdir -p \
       "/home/${USER}/.config/hivemind" \
       "/home/${USER}/.config/hivemind-core" \

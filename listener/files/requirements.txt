@@ -1,6 +1,8 @@
 hivemind-bus-client
-hivemind-core
+hivemind-plugin-manager==0.7.0a1
+hivemind-core==4.6.0a2
 hivemind-http-protocol
 hivemind-audio-binary-protocol
-hivemind-redis-database
+hivemind-redis-database==0.1.0a2
+git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@913ad9c78b4cca059e3280bc926f8388bb634406
 setuptools
