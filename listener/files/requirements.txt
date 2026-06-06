@@ -4,5 +4,5 @@ hivemind-core==4.6.0a2
 hivemind-http-protocol
 hivemind-audio-binary-protocol
 hivemind-redis-database==0.1.0a2
-git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@913ad9c78b4cca059e3280bc926f8388bb634406
+git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@51beb5500f491505831f9b6ff338eacd5cfc85c1
 setuptools
