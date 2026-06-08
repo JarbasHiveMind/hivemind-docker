@@ -1,6 +1,6 @@
 hivemind-bus-client==0.9.1a1
 hivemind-plugin-manager==0.7.1a1
-hivemind-websocket-protocol==0.2.0a3
+hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@0.2.1a3
 hivemind-core==4.6.0a2
 hivemind-http-protocol==0.0.2a3
 hivemind-audio-binary-protocol==2.1.6a1
