@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.25
 FROM python:3.13.11-slim-trixie@sha256:56ab277ddf459858f94052252565945c34617c841818faf8f34f6896de06cffe
 
 ARG BUILD_DATE=unknown

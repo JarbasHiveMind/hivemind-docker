@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.25
 ARG TAG=alpha
 ARG REGISTRY=docker.io/smartgic
 ARG BASE_IMAGE=${REGISTRY}/hivemind-base:${TAG}
