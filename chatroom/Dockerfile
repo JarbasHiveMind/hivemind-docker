@@ -38,7 +38,7 @@ SHELL ["/bin/bash", "-c"]
 RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked \
     PRERELEASE="${UV_PRERELEASE}" \
  && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
- && uv pip install --prerelease="${PRERELEASE}" hivemind-flask-chatroom \
+ && uv pip install --prerelease="${PRERELEASE}" hivemind-flask-chatroom==0.1.0 \
  && rm -rf /tmp/* /var/tmp/*
 
 USER "$USER"
