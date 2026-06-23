@@ -1,9 +1,11 @@
 hivemind-bus-client
-git+https://github.com/thalovant/hivemind-plugin-manager.git@e63513d
 hivemind-core==4.6.0a2
-git+https://github.com/thalovant/hivemind-websocket-protocol.git@4d2f0ef09db8045c70eaeb48c44ffa3df4e2e588
-git+https://github.com/thalovant/hivemind-http-protocol.git@813667c
+# plugin-manager + websocket transport are pulled in (and version-constrained)
+# transitively by hivemind-core; declared here too so the bundled image is
+# explicit about its protocol stack.
+hivemind-plugin-manager
+hivemind-websocket-protocol
+hivemind-http-protocol
 hivemind-audio-binary-protocol
 hivemind-redis-database==0.1.0a2
-git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@51beb5500f491505831f9b6ff338eacd5cfc85c1
 setuptools
