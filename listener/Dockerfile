@@ -34,17 +34,14 @@ ENV HIVEMIND_WEBSOCKET_PING_INTERVAL=25 \
 
 COPY files/requirements.txt /tmp/requirements.txt
 COPY files/agent-requirements.txt /tmp/agent-requirements.txt
-COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY files/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY files/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl /tmp/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl
 
 USER root
 
 SHELL ["/bin/bash", "-c"]
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-    --mount=type=cache,target=/root/.cache/uv,sharing=locked \
-    --mount=type=secret,id=github_token,required=false \
-    apt-get update \
+RUN apt-get update \
  && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends --no-install-suggests \
       build-essential python3-dev \
  && PRERELEASE="${UV_PRERELEASE}" \
@@ -82,34 +79,24 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
  && apt-get --purge autoremove -y \
  && rm -rf /var/log/{apt,dpkg.log} /tmp/* /var/tmp/*
 
-RUN "/home/${USER}/.venv/bin/python" - <<'PY'
-import importlib.metadata as metadata
-import subprocess
-import sys
-
-from hivemind_bus_client.client import HiveMessageBusClient
-from hivemind_websocket_protocol import HiveMindWebsocketProtocol
-from packaging.version import Version
-
-subprocess.run([sys.executable, "-m", "pip", "check"], check=True)
-
-def _version(package):
-    return metadata.version(package)
-
-
-protocol = HiveMindWebsocketProtocol(config={})
-settings = protocol._websocket_ping_settings()
-if settings.get("websocket_ping_interval", 0) <= 0:
-    raise SystemExit("hivemind-websocket-protocol keepalive is not enabled")
-if not hasattr(HiveMessageBusClient, "_websocket_keepalive_options"):
-    raise SystemExit("hivemind-bus-client keepalive support is missing")
-if Version(_version("hivemind-websocket-protocol")) < Version("0.2.1a3"):
-    raise SystemExit("hivemind-websocket-protocol must be at least 0.2.1a3")
-if Version(_version("hivemind-bus-client")) < Version("0.9.2a2"):
-    raise SystemExit("hivemind-bus-client must be at least 0.9.2a2")
-if Version(_version("ovos-bus-client")) >= Version("2.0.0"):
-    raise SystemExit("ovos-bus-client must remain on the production 1.x line")
-PY
+RUN "/home/${USER}/.venv/bin/python" -c "\
+import importlib.metadata as metadata, subprocess, sys; \
+from hivemind_bus_client.client import HiveMessageBusClient; \
+from hivemind_core.service import get_agent_protocol; \
+from hivemind_websocket_protocol import HiveMindWebsocketProtocol; \
+from packaging.version import Version; \
+subprocess.run([sys.executable, '-m', 'pip', 'check'], check=True); \
+version = lambda package: metadata.version(package); \
+settings = HiveMindWebsocketProtocol(config={})._websocket_ping_settings(); \
+assert settings.get('websocket_ping_interval', 0) > 0, 'hivemind-websocket-protocol keepalive is not enabled'; \
+assert hasattr(HiveMessageBusClient, '_websocket_keepalive_options'), 'hivemind-bus-client keepalive support is missing'; \
+assert Version(version('hivemind-websocket-protocol')) >= Version('0.2.1a3'), 'hivemind-websocket-protocol must be at least 0.2.1a3'; \
+assert Version(version('hivemind-bus-client')) >= Version('0.9.2a4'), 'hivemind-bus-client must be at least 0.9.2a4'; \
+assert Version('2.0.0a3') <= Version(version('ovos-bus-client')) < Version('3.0.0'), 'ovos-bus-client must remain on the production 2.x line'; \
+assert Version(version('hivemind-core')) >= Version('4.6.7a1'), 'hivemind-core must be at least the production 4.6.7a1 release'; \
+assert Version(version('hivemind-ovos-agent-plugin')) >= Version('0.3.2a1'), 'hivemind-ovos-agent-plugin must be at least 0.3.2a1'; \
+agent_class, _ = get_agent_protocol(); \
+assert agent_class.__name__ == 'OVOSAgentProtocol', f'unexpected agent protocol resolved: {agent_class.__name__}'"
 
 USER "$USER"
 

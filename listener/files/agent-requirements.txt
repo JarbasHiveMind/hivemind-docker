@@ -1,2 +1,2 @@
-ovos-bus-client==1.5.0
-hivemind-ovos-agent-plugin==0.3.0a4
+ovos-bus-client==2.3.0a2
+hivemind-ovos-agent-plugin==0.3.2a1
