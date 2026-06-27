@@ -29,6 +29,9 @@ ARG ALPHA=false
 ARG UV_PRERELEASE=never
 ARG USER=hivemind
 
+ENV HIVEMIND_WEBSOCKET_PING_INTERVAL=25 \
+    HIVEMIND_WEBSOCKET_PING_TIMEOUT=10
+
 USER root
 
 COPY files/requirements.txt /tmp/requirements.txt
@@ -46,6 +49,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
  && PRERELEASE="${UV_PRERELEASE}" \
  && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
  && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+ && uv pip check \
+ && python3 -c $'from hivemind_bus_client.client import HiveMessageBusClient\nfrom hivemind_bus_client.keepalive import websocket_keepalive_options\nassert hasattr(HiveMessageBusClient, "_websocket_keepalive_options")\nopts = websocket_keepalive_options()\nassert opts["ping_interval"] == 25.0, opts\nassert opts["ping_timeout"] == 10.0, opts\nprint("satellite websocket keepalive enabled", opts)' \
  && mkdir -p \
       "/home/${USER}/.config/hivemind" \
       "/home/${USER}/.config/mycroft" \

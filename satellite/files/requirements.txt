@@ -1,5 +1,5 @@
 hivemind-voice-sat
-hivemind-bus-client
+hivemind-bus-client @ git+https://github.com/JarbasHiveMind/hivemind-websocket-client.git@a7f07db862988cc2364367747a2ee57ba6d91927
 ovos-audio-plugin-mpv
 ovos-audio-plugin-simple
 ovos-classifiers
