@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.title="HiveMind OCI Matrix bot" \
       org.opencontainers.image.revision="${GIT_SHA}"
 
 ARG ALPHA=false
-ARG UV_PRERELEASE=disallow
+ARG UV_PRERELEASE=allow
 ARG USER=hivemind
 
 COPY files/requirements.txt /tmp/requirements.txt
