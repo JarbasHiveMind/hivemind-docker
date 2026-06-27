@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.title="HiveMind OCI Chatroom" \
       org.opencontainers.image.revision="${GIT_SHA}"
 
 ARG ALPHA=false
-ARG UV_PRERELEASE=never
+ARG UV_PRERELEASE=disallow
 ARG USER=hivemind
 
 COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
