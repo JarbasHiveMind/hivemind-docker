@@ -26,8 +26,11 @@ LABEL org.opencontainers.image.title="HiveMind OCI HiveMind listener" \
       org.opencontainers.image.revision="${GIT_SHA}"
 
 ARG ALPHA=false
-ARG UV_PRERELEASE=never
+ARG UV_PRERELEASE=allow
 ARG USER=hivemind
+
+ENV HIVEMIND_WEBSOCKET_PING_INTERVAL=25 \
+    HIVEMIND_WEBSOCKET_PING_TIMEOUT=10
 
 COPY files/requirements.txt /tmp/requirements.txt
 COPY files/agent-requirements.txt /tmp/agent-requirements.txt
@@ -56,6 +59,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       --reinstall-package hivemind-websocket-protocol \
       --reinstall-package hivemind-core \
       --reinstall-package hivemind-http-protocol \
+      --reinstall-package hivemind-mqtt-protocol \
       --reinstall-package hivemind-audio-binary-protocol \
       --reinstall-package hivemind-redis-database \
       -r /tmp/requirements.txt \
@@ -77,6 +81,35 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
  && apt-get --purge remove -y build-essential python3-dev \
  && apt-get --purge autoremove -y \
  && rm -rf /var/log/{apt,dpkg.log} /tmp/* /var/tmp/*
+
+RUN "/home/${USER}/.venv/bin/python" - <<'PY'
+import importlib.metadata as metadata
+import subprocess
+import sys
+
+from hivemind_bus_client.client import HiveMessageBusClient
+from hivemind_websocket_protocol import HiveMindWebsocketProtocol
+from packaging.version import Version
+
+subprocess.run([sys.executable, "-m", "pip", "check"], check=True)
+
+def _version(package):
+    return metadata.version(package)
+
+
+protocol = HiveMindWebsocketProtocol(config={})
+settings = protocol._websocket_ping_settings()
+if settings.get("websocket_ping_interval", 0) <= 0:
+    raise SystemExit("hivemind-websocket-protocol keepalive is not enabled")
+if not hasattr(HiveMessageBusClient, "_websocket_keepalive_options"):
+    raise SystemExit("hivemind-bus-client keepalive support is missing")
+if Version(_version("hivemind-websocket-protocol")) < Version("0.2.1a3"):
+    raise SystemExit("hivemind-websocket-protocol must be at least 0.2.1a3")
+if Version(_version("hivemind-bus-client")) < Version("0.9.2a2"):
+    raise SystemExit("hivemind-bus-client must be at least 0.9.2a2")
+if Version(_version("ovos-bus-client")) >= Version("2.0.0"):
+    raise SystemExit("ovos-bus-client must remain on the production 1.x line")
+PY
 
 USER "$USER"
 

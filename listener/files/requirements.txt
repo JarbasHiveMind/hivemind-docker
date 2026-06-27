@@ -1,8 +1,9 @@
-hivemind-bus-client==0.9.1a1
+hivemind-bus-client @ git+https://github.com/JarbasHiveMind/hivemind-websocket-client.git@1c35a13ee9fd8d4490e4769f3f39303b7bdea7bd
 hivemind-plugin-manager==0.7.1a1
 hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@0.2.1a3
 hivemind-core==4.6.0a2
 hivemind-http-protocol==0.0.2a3
+hivemind-mqtt-protocol==0.1.1a1
 hivemind-audio-binary-protocol==2.1.6a1
 hivemind-redis-database==0.1.0a2
 hivemind-intent-quota-plugin[redis] @ git+https://github.com/thalovant/hivemind-intent-quota-plugin.git@1892b106de6da660eea9dad25e24616c992bb924
