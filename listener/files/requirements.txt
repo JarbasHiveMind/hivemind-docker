@@ -3,7 +3,7 @@ hivemind-plugin-manager==0.7.1a1
 hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@e78d09c06a6beb017bc968819b21a06d71752879
 hivemind-core==4.6.7a1
 hivemind-http-protocol==0.0.2a3
-hivemind-mqtt-protocol @ file:///tmp/hivemind_mqtt_protocol-0.1.1a2-py3-none-any.whl
+hivemind-mqtt-protocol @ file:///tmp/hivemind_mqtt_protocol-0.1.1a3-py3-none-any.whl
 hivemind-audio-binary-protocol==2.1.6a1
 hivemind-redis-database==0.1.0a2
 hivemind-intent-quota-plugin[redis] @ file:///tmp/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl
