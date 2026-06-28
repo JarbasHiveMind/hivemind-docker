@@ -91,7 +91,7 @@ version = lambda package: metadata.version(package); \
 settings = HiveMindWebsocketProtocol(config={})._websocket_ping_settings(); \
 assert settings.get('websocket_ping_interval', 0) > 0, 'hivemind-websocket-protocol keepalive is not enabled'; \
 assert hasattr(HiveMessageBusClient, '_websocket_keepalive_options'), 'hivemind-bus-client keepalive support is missing'; \
-assert Version(version('hivemind-websocket-protocol')) >= Version('0.2.1a3'), 'hivemind-websocket-protocol must be at least 0.2.1a3'; \
+assert Version(version('hivemind-websocket-protocol')) >= Version('0.2.1a4'), 'hivemind-websocket-protocol must be at least 0.2.1a4'; \
 assert Version(version('hivemind-bus-client')) >= Version('0.9.2a4'), 'hivemind-bus-client must be at least 0.9.2a4'; \
 assert Version(version('hivemind-mqtt-protocol')) >= Version('0.1.1a3'), 'hivemind-mqtt-protocol must include managed TLS trust controls'; \
 assert Version('2.0.0a3') <= Version(version('ovos-bus-client')) < Version('3.0.0'), 'ovos-bus-client must remain on the production 2.x line'; \

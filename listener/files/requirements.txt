@@ -1,6 +1,6 @@
 hivemind-bus-client @ git+https://github.com/JarbasHiveMind/hivemind-websocket-client.git@a7f07db862988cc2364367747a2ee57ba6d91927
 hivemind-plugin-manager==0.7.1a1
-hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@e78d09c06a6beb017bc968819b21a06d71752879
+hivemind-websocket-protocol @ git+https://github.com/thalovant/hivemind-websocket-protocol.git@77b0681401f307501ca8d6da2477af0ebb3eb79c
 hivemind-core==4.6.7a1
 hivemind-http-protocol==0.0.2a3
 hivemind-mqtt-protocol @ file:///tmp/hivemind_mqtt_protocol-0.1.1a3-py3-none-any.whl
