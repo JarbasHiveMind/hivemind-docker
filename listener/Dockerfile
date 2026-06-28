@@ -36,6 +36,7 @@ COPY files/requirements.txt /tmp/requirements.txt
 COPY files/agent-requirements.txt /tmp/agent-requirements.txt
 COPY files/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY files/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl /tmp/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl
+COPY files/hivemind_mqtt_protocol-0.1.1a2-py3-none-any.whl /tmp/hivemind_mqtt_protocol-0.1.1a2-py3-none-any.whl
 
 USER root
 
@@ -92,6 +93,7 @@ assert settings.get('websocket_ping_interval', 0) > 0, 'hivemind-websocket-proto
 assert hasattr(HiveMessageBusClient, '_websocket_keepalive_options'), 'hivemind-bus-client keepalive support is missing'; \
 assert Version(version('hivemind-websocket-protocol')) >= Version('0.2.1a3'), 'hivemind-websocket-protocol must be at least 0.2.1a3'; \
 assert Version(version('hivemind-bus-client')) >= Version('0.9.2a4'), 'hivemind-bus-client must be at least 0.9.2a4'; \
+assert Version(version('hivemind-mqtt-protocol')) >= Version('0.1.1a2'), 'hivemind-mqtt-protocol must include managed TLS trust controls'; \
 assert Version('2.0.0a3') <= Version(version('ovos-bus-client')) < Version('3.0.0'), 'ovos-bus-client must remain on the production 2.x line'; \
 assert Version(version('hivemind-core')) >= Version('4.6.7a1'), 'hivemind-core must be at least the production 4.6.7a1 release'; \
 assert Version(version('hivemind-ovos-agent-plugin')) >= Version('0.3.2a1'), 'hivemind-ovos-agent-plugin must be at least 0.3.2a1'; \
