@@ -35,6 +35,7 @@ ENV HIVEMIND_WEBSOCKET_PING_INTERVAL=25 \
 COPY files/requirements.txt /tmp/requirements.txt
 COPY files/agent-requirements.txt /tmp/agent-requirements.txt
 COPY files/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY files/patch_hivemind_ovos_agent.py /tmp/patch_hivemind_ovos_agent.py
 COPY files/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl /tmp/hivemind_intent_quota_plugin-0.1.0a4-py3-none-any.whl
 COPY files/hivemind_mqtt_protocol-0.1.1a3-py3-none-any.whl /tmp/hivemind_mqtt_protocol-0.1.1a3-py3-none-any.whl
 
@@ -65,6 +66,7 @@ RUN apt-get update \
       --reinstall-package ovos-bus-client \
       --reinstall-package hivemind-ovos-agent-plugin \
       -r /tmp/agent-requirements.txt \
+ && "/home/${USER}/.venv/bin/python" /tmp/patch_hivemind_ovos_agent.py \
  && if [ -n "${GITHUB_TOKEN:-}" ]; then \
       git config --global --remove-section url."https://x-access-token:${GITHUB_TOKEN}@github.com/" || true; \
     fi \
@@ -82,6 +84,8 @@ RUN apt-get update \
 
 RUN "/home/${USER}/.venv/bin/python" -c "\
 import importlib.metadata as metadata, subprocess, sys; \
+import inspect; \
+import hivemind_ovos_agent_plugin as agent_plugin; \
 from hivemind_bus_client.client import HiveMessageBusClient; \
 from hivemind_core.service import get_agent_protocol; \
 from hivemind_websocket_protocol import HiveMindWebsocketProtocol; \
@@ -97,6 +101,11 @@ assert Version(version('hivemind-mqtt-protocol')) >= Version('0.1.1a3'), 'hivemi
 assert Version('2.0.0a3') <= Version(version('ovos-bus-client')) < Version('3.0.0'), 'ovos-bus-client must remain on the production 2.x line'; \
 assert Version(version('hivemind-core')) >= Version('4.6.7a1'), 'hivemind-core must be at least the production 4.6.7a1 release'; \
 assert Version(version('hivemind-ovos-agent-plugin')) >= Version('0.3.2a1'), 'hivemind-ovos-agent-plugin must be at least 0.3.2a1'; \
+send_source = inspect.getsource(agent_plugin.OVOSAgentProtocol.handle_send); \
+internal_source = inspect.getsource(agent_plugin.OVOSAgentProtocol.handle_internal_mycroft); \
+assert 'list(self.clients.items())' in send_source, 'agent send fan-out must snapshot clients'; \
+assert '.get(peer)' in send_source, 'agent direct send must tolerate disconnect races'; \
+assert 'list(self.clients.items())' in internal_source, 'agent internal mycroft routing must snapshot clients'; \
 agent_class, _ = get_agent_protocol(); \
 assert agent_class.__name__ == 'OVOSAgentProtocol', f'unexpected agent protocol resolved: {agent_class.__name__}'"
 
