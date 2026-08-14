@@ -1,0 +1,252 @@
+---
+# HiveMind self-host stack. Bring up the hub alone, or the hub plus any
+# combination of bridges, with `--profile`. See README.md for the
+# quickstart. Grounded in the verified working setups on ser9
+# (~/hivemind-bridges/<name>/, systemd units under
+# ~/.config/systemd/user/hivemind-*).
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    mode: non-blocking
+    max-buffer-size: 4m
+    max-size: "50m"
+    max-file: "1"
+
+volumes:
+  hivemind-hub-config:
+  hivemind-hub-data:
+  hivemind-creds:          # shared: hub writes, bridges read (first-boot bootstrap)
+  matrix-conduit-data:
+  matrix-bridge-config:
+  mattermost-config:
+  mattermost-data:
+  mattermost-db-data:
+  deltachat-config:
+  hackchat-config:
+  baresip-config:
+  asterisk-config:
+  mediaplayer-config:
+  mediaplayer-data:
+
+services:
+  # ---------------------------------------------------------------------
+  # The hub: hivemind-core + OVOS agent stack. Always required — every
+  # bridge profile depends on it. `docker compose --profile hub up` (or
+  # any bridge profile, which pulls "hub" in automatically) starts it.
+  # ---------------------------------------------------------------------
+  hub:
+    profiles: ["hub", "matrix", "mattermost", "deltachat", "hackchat", "twitch", "telegram", "baresip"]
+    build:
+      context: .
+      dockerfile: hub/Dockerfile
+    container_name: hivemind-hub
+    hostname: hub
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      HIVEMIND_BRIDGES: "matrix mattermost deltachat hackchat twitch telegram baresip"
+      TZ: ${TZ:-UTC}
+    ports:
+      - "127.0.0.1:5678:5678"   # HiveMind websocket — bump to public only if you know what you're doing
+    volumes:
+      - hivemind-hub-config:/home/hivemind/.config
+      - hivemind-hub-data:/home/hivemind/.local/share
+      - hivemind-creds:/creds
+
+  # ---------------------------------------------------------------------
+  # Second, isolated hub running the OCP/media-player agent protocol.
+  # Reuses the ser9-verified Dockerfile, hivemind-core pinned to the
+  # current alpha floor.
+  # ---------------------------------------------------------------------
+  media-player:
+    profiles: ["media-player"]
+    build:
+      context: media-player
+      dockerfile: Dockerfile
+    container_name: hivemind-mediaplayer
+    hostname: hivemind-mediaplayer
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "127.0.0.1:5680:5678"
+    volumes:
+      - mediaplayer-config:/home/hivemind/.config
+      - mediaplayer-data:/home/hivemind/.local/share
+
+  # ---------------------------------------------------------------------
+  # Self-hosted infra
+  # ---------------------------------------------------------------------
+  matrix-conduit:
+    profiles: ["matrix"]
+    image: matrixconduit/matrix-conduit:latest
+    container_name: hivemind-matrix-conduit
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "127.0.0.1:6167:6167"
+    volumes:
+      - matrix-conduit-data:/var/lib/matrix-conduit
+      - ./infra/conduit.toml:/etc/conduit.toml:ro
+    environment:
+      CONDUIT_CONFIG: /etc/conduit.toml
+
+  mattermost-db:
+    profiles: ["mattermost"]
+    image: postgres:15-alpine
+    container_name: hivemind-mattermost-db
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      POSTGRES_USER: mattermost
+      POSTGRES_PASSWORD: mattermost
+      POSTGRES_DB: mattermost
+    volumes:
+      - mattermost-db-data:/var/lib/postgresql/data
+
+  mattermost:
+    profiles: ["mattermost"]
+    image: mattermost/mattermost-team-edition:latest
+    container_name: hivemind-mattermost
+    restart: unless-stopped
+    depends_on: [mattermost-db]
+    logging: *default-logging
+    environment:
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: "postgres://mattermost:mattermost@mattermost-db:5432/mattermost?sslmode=disable"
+      MM_SERVICESETTINGS_SITEURL: "http://localhost:8065"
+    ports:
+      - "127.0.0.1:8065:8065"
+    volumes:
+      - mattermost-config:/mattermost/config
+      - mattermost-data:/mattermost/data
+
+  asterisk:
+    profiles: ["baresip"]
+    image: andrius/asterisk
+    container_name: hivemind-asterisk
+    restart: unless-stopped
+    logging: *default-logging
+    network_mode: host   # matches the verified ser9 unit; SIP/RTP need host networking
+    volumes:
+      - ./infra/asterisk:/etc/asterisk
+
+  # ---------------------------------------------------------------------
+  # Bridges — one profile each. Each depends on "hub" and waits for its
+  # credentials file to appear in the shared hivemind-creds volume before
+  # starting the real bridge process (see bootstrap/wait-for-creds.sh).
+  # ---------------------------------------------------------------------
+  matrix-bridge:
+    profiles: ["matrix"]
+    build:
+      context: bridges/matrix
+      dockerfile: Dockerfile
+    container_name: hivemind-matrix-bridge
+    restart: unless-stopped
+    depends_on: [hub, matrix-conduit]
+    logging: *default-logging
+    environment:
+      MATRIX_HOMESERVER: ${MATRIX_HOMESERVER:-http://matrix-conduit:6167}
+      MATRIX_TOKEN: ${MATRIX_TOKEN:-}
+      MATRIX_ROOM: ${MATRIX_ROOM:-#hivemind:localhost}
+    volumes:
+      - matrix-bridge-config:/config
+
+  mattermost-bridge:
+    profiles: ["mattermost"]
+    build:
+      context: bridges/mattermost
+      dockerfile: Dockerfile
+    container_name: hivemind-mattermost-bridge
+    restart: unless-stopped
+    depends_on: [hub, mattermost]
+    logging: *default-logging
+    environment:
+      MATTERMOST_URL: ${MATTERMOST_URL:-mattermost}
+      MATTERMOST_EMAIL: ${MATTERMOST_EMAIL:-}
+      MATTERMOST_PASSWORD: ${MATTERMOST_PASSWORD:-}
+      MATTERMOST_TAG: ${MATTERMOST_TAG:-@hivemind_bridge_bot}
+    volumes:
+      - hivemind-creds:/creds:ro
+
+  deltachat-bridge:
+    profiles: ["deltachat"]
+    build:
+      context: bridges/deltachat
+      dockerfile: Dockerfile
+    container_name: hivemind-deltachat-bridge
+    restart: unless-stopped
+    depends_on: [hub]
+    logging: *default-logging
+    environment:
+      DELTACHAT_EMAIL: ${DELTACHAT_EMAIL:-}
+      DELTACHAT_EMAIL_PASSWORD: ${DELTACHAT_EMAIL_PASSWORD:-}
+    volumes:
+      - deltachat-config:/config
+      - hivemind-creds:/creds:ro
+
+  hackchat-bridge:
+    profiles: ["hackchat"]
+    build:
+      context: bridges/hackchat
+      dockerfile: Dockerfile
+    container_name: hivemind-hackchat-bridge
+    restart: unless-stopped
+    depends_on: [hub]
+    logging: *default-logging
+    environment:
+      HACKCHAT_CHANNEL: ${HACKCHAT_CHANNEL:-hivemind-selfhost}
+      HACKCHAT_USERNAME: ${HACKCHAT_USERNAME:-HiveMindBot}
+    volumes:
+      - hackchat-config:/config
+      - hivemind-creds:/creds:ro
+
+  twitch-bridge:
+    profiles: ["twitch"]
+    build:
+      context: https://github.com/JarbasHiveMind/HiveMind-twitch-bridge.git
+      dockerfile: Dockerfile   # TODO: PR pending upstream — see selfhost/bridges/twitch/Dockerfile
+    container_name: hivemind-twitch-bridge
+    restart: unless-stopped
+    depends_on: [hub]
+    logging: *default-logging
+    environment:
+      TWITCH_CHANNEL: ${TWITCH_CHANNEL:-}
+      TWITCH_OAUTH: ${TWITCH_OAUTH:-}
+      TWITCH_NICKNAME: ${TWITCH_NICKNAME:-hivemind_bot}
+    volumes:
+      - hivemind-creds:/creds:ro
+
+  telegram-bridge:
+    profiles: ["telegram"]
+    build:
+      context: https://github.com/JarbasHiveMind/hivemind-telegram-bridge.git
+      dockerfile: Dockerfile
+    container_name: hivemind-telegram-bridge
+    restart: unless-stopped
+    depends_on: [hub]
+    logging: *default-logging
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_TOKEN:-}
+      HIVEMIND_HOST: ws://hub
+      HIVEMIND_PORT: "5678"
+      HIVEMIND_ACCESS_KEY: ${HIVEMIND_ACCESS_KEY:-}   # TODO: not yet auto-injected, see README
+      HIVEMIND_PASSWORD: ${HIVEMIND_PASSWORD:-}        # TODO: not yet auto-injected, see README
+
+  baresip-bridge:
+    profiles: ["baresip"]
+    build:
+      context: https://github.com/JarbasHiveMind/HiveMind-baresip-bridge.git
+      dockerfile: Dockerfile   # TODO: PR pending upstream — see selfhost/bridges/baresip/Dockerfile
+    container_name: hivemind-baresip-bridge
+    restart: unless-stopped
+    depends_on: [hub, asterisk]
+    network_mode: host   # matches verified ser9 unit — SIP/RTP need host networking
+    logging: *default-logging
+    environment:
+      SIP_USER: ${SIP_USER:-assistant}
+      SIP_PASSWORD: ${SIP_PASSWORD:-assistantpass}
+      SIP_GATEWAY: 127.0.0.1   # host networking, asterisk is on localhost
+    volumes:
+      - baresip-config:/app/config
+      - hivemind-creds:/creds:ro
