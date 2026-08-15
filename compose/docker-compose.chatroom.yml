@@ -1,0 +1,31 @@
+---
+version: "3.9"
+
+x-podman: &podman
+  userns_mode: keep-id
+  security_opt:
+    - "label=disable"
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    mode: non-blocking
+    max-buffer-size: 4m
+    max-size: "200m"
+    max-file: "1"
+
+services:
+  hivemind_chatroom:
+    <<: *podman
+    container_name: hivemind_chatroom
+    hostname: hivemind_chatroom
+    restart: unless-stopped
+    image: smartgic/hivemind-chatroom:${VERSION}
+    logging: *default-logging
+    pull_policy: always
+    environment:
+      TZ: $TZ
+      SAT_KEY: $SAT_KEY
+      SAT_PASSWORD: $SAT_PASSWORD
+      SAT_HOST: $SAT_HOST
+      SAT_PORT: $SAT_PORT

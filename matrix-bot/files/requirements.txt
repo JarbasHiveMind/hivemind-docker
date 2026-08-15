@@ -1,0 +1,4 @@
+# 0.1.1 declares an impossible python-matrixbot>=0.4.0 (that project only ever
+# published up to 0.0.7), so the release is uninstallable. 0.1.2a2 corrects the
+# pin to python-matrixbot>=0.0.7.
+hivemind-matrix-bridge==0.1.2a2
