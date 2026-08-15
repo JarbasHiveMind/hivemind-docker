@@ -1,0 +1,46 @@
+{
+    "binarize": false,
+    "allowed_encodings": [
+        "JSON-B64",
+        "JSON-URLSAFE-B64",
+        "JSON-B91",
+        "JSON-Z85B",
+        "JSON-Z85P",
+        "JSON-B32",
+        "JSON-HEX"
+    ],
+    "allowed_ciphers": [
+        "CHACHA20-POLY1305",
+        "AES-GCM"
+    ],
+    "agent_protocol": {
+        "module": "hivemind-player-agent-plugin",
+        "hivemind-player-agent-plugin": {}
+    },
+    "binary_protocol": {
+        "module": null
+    },
+    "network_protocol": {
+        "hivemind-websocket-plugin": {
+            "host": "0.0.0.0",
+            "port": 5678,
+            "ssl": false
+        }
+    },
+    "database": {
+        "module": "hivemind-sqlite-db-plugin",
+        "hivemind-sqlite-db-plugin": {
+            "name": "clients",
+            "subfolder": "hivemind-core"
+        }
+    },
+    "min_protocol_version": 1,
+    "min_password_bits": 40,
+    "runtime_password_strength_check": true,
+    "presence": {
+        "enabled": false,
+        "name": "HiveMind-MediaPlayer",
+        "zeroconf": false,
+        "upnp": false
+    }
+}
