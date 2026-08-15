@@ -93,7 +93,7 @@ services:
 
   mattermost-db:
     profiles: ["mattermost"]
-    image: postgres:15-alpine
+    image: postgres:18-alpine
     container_name: hivemind-mattermost-db
     restart: unless-stopped
     logging: *default-logging
