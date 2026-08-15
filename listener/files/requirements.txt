@@ -7,5 +7,5 @@ hivemind-plugin-manager
 hivemind-websocket-protocol
 hivemind-http-protocol
 hivemind-audio-binary-protocol
-hivemind-redis-database==0.1.0a2
+hivemind-redis-database==0.1.0a7
 setuptools
