@@ -603,9 +603,9 @@
    "repo": "docker.io/smartgic/hivemind-sound-base"
   },
   "webchat": {
-   "built": "2026-08-30T21:13:55Z",
-   "constraints_ref": "5cc4f650affbe78244c17d435724f0d49737ced2",
-   "digest": "sha256:cbc5343f6c0c9296b8e1e29862fc8678339fb80f743678129b2432d76c70ddbd",
+   "built": "2026-08-30T22:06:10Z",
+   "constraints_ref": "614b5aa2ee2c3f53c0006a97d397d1f9beefc511",
+   "digest": "sha256:3340b5ac9be80e38ba45c65dc89782e5b3da5c93bf3d7bc50455cef773d245b8",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-webchat",
    "packages": [
     "CacheControl",
@@ -644,5 +644,5 @@
   }
  },
  "ovos_releases_ref": "614b5aa2ee2c3f53c0006a97d397d1f9beefc511",
- "updated": "2026-08-30T21:37:09Z"
+ "updated": "2026-08-30T22:06:10Z"
 }
