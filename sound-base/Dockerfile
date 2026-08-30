@@ -83,7 +83,9 @@ USER root
 SHELL ["/bin/bash", "-c"]
 
 COPY --from=builder /tmp/wheels /tmp/wheels
+# PYTHONDONTWRITEBYTECODE keeps runtime layers clean, so compile at build time instead
 RUN python -m pip install --no-index --find-links=/tmp/wheels pyalsaaudio \
+ && python -m compileall -q "/home/hivemind/.venv/lib" \
  && rm -rf /tmp/wheels
 
 ARG USER=hivemind
