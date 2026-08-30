@@ -32,28 +32,47 @@ cd hivemind-docker
 ```
 
 ### 2. Configure Your Environment
-Edit the `.env` file to configure your setup. Here’s an example:
+Copy the documented template and fill in real values (`compose/.env-example` explains every variable):
 
-```env
-HIVEMIND_PORT=5678
-HIVEMIND_PASSWORD=SuperSecretPassword
+```bash
+cp compose/.env-example compose/.env
 ```
 
 Feel free to use "password123" if you enjoy living dangerously. (Don’t do this. Seriously.)
 
-### 3. Build and Run
-Run the following command to build your containers and start the HiveMind:
+There is one compose file per deployment under `compose/`:
+
+| File | Deployment |
+| ---- | ---------- |
+| `docker-compose.yml` | the hub — `hivemind-listener` + an admin `hivemind-cli` |
+| `docker-compose.satellite.yml` | a voice satellite pointed at a hub, with its own cli |
+| `docker-compose.chatroom.yml` | the Flask chatroom bridge |
+| `docker-compose.webchat.yml` | the webchat UI |
+| `docker-compose.matrix-bot.yml` | the Matrix bridge |
+
+### 3. Run
+Pull the published images and start your deployment:
 
 ```bash
-docker-compose up -d
+docker compose --env-file compose/.env -f compose/docker-compose.yml up -d
 ```
 
-This command will:
-- Pull down the necessary images.
-- Deploy your HiveMind containers.
-- Launch your very own AI hive network.
-
 Grab a coffee—or a pint of honey—while Docker works its magic.
+
+## What this repository builds
+
+| Image | What it runs |
+| ----- | ------------ |
+| [`smartgic/hivemind-base`](https://hub.docker.com/r/smartgic/hivemind-base) | shared Python 3.13 base layer — parent of everything, not meant to run |
+| [`smartgic/hivemind-sound-base`](https://hub.docker.com/r/smartgic/hivemind-sound-base) | base + ALSA/PulseAudio/PipeWire audio stack |
+| [`smartgic/hivemind-listener`](https://hub.docker.com/r/smartgic/hivemind-listener) | `hivemind-core listen` — the hub satellites connect to (port 5678, healthchecked) |
+| [`smartgic/hivemind-cli`](https://hub.docker.com/r/smartgic/hivemind-cli) | admin console with `hivemind-core` + `hivemind-cli` (exec into it) |
+| [`smartgic/hivemind-satellite`](https://hub.docker.com/r/smartgic/hivemind-satellite) | `hivemind-voice-sat` with microphone, VAD, wake-word, STT and TTS plugins |
+| [`smartgic/hivemind-chatroom`](https://hub.docker.com/r/smartgic/hivemind-chatroom) | chatroom bridge WebUI (port 8985, healthchecked) |
+| [`smartgic/hivemind-webchat`](https://hub.docker.com/r/smartgic/hivemind-webchat) | webchat reference client (port 9090, healthchecked) |
+| [`smartgic/hivemind-matrix-bot`](https://hub.docker.com/r/smartgic/hivemind-matrix-bot) | Matrix chatroom bridge |
+
+Every Python install inside the images is pinned by the channel's `constraints-<channel>.txt` from [ovos-releases](https://github.com/OpenVoiceOS/ovos-releases) — the same resolved version set ovos-installer and ovos-docker use, so a hub and its satellites always speak matching protocol versions.
 
 ## Image Tags
 
@@ -77,7 +96,14 @@ A dated `<channel>-YYYYMMDD` tag is kept for each publish, and every image is al
 | Publish on constraints change | hourly | rebuilds images whose pinned packages moved in ovos-releases |
 | Weekly rebuild | Tuesdays | full rebuild per channel, so base-OS fixes always land |
 
-The workflows are thin callers of ovos-docker's reusable [`build-images.yml`](https://github.com/OpenVoiceOS/ovos-docker/blob/dev/.github/workflows/build-images.yml) — images are verified (manifest, per-arch smoke run) before the channel tag moves, and what each channel was built from is recorded on the `build-state` branch.
+The workflows are thin callers of ovos-docker's reusable [`build-images.yml@v2.0.1`](https://github.com/OpenVoiceOS/ovos-docker/blob/v2.0.1/.github/workflows/build-images.yml) — the exact CI that builds the ovos-docker images. An image is verified (manifest, per-arch smoke run) before its channel tag moves, published to Docker Hub and the GHCR mirror, cosign-signed, and what each channel was built from is recorded on the `build-state` branch. Verify a signature with:
+
+```bash
+cosign verify \
+  --certificate-identity-regexp 'github.com/(JarbasHiveMind/hivemind-docker|OpenVoiceOS/ovos-docker)' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  docker.io/smartgic/hivemind-listener:alpha
+```
 
 ## Build Images (Buildx Bake)
 
@@ -115,6 +141,14 @@ Defaults are defined in `docker-bake.hcl` and `scripts/bake.sh`:
 
 2. **Issue: Everything is on fire.**
    - Solution: Stop, drop, and `docker-compose down`.
+
+## Related projects
+
+- [ovos-installer](https://github.com/OpenVoiceOS/ovos-installer) — installs a hub, listener or satellite profile using these images
+- [ovos-docker](https://github.com/OpenVoiceOS/ovos-docker) — the Open Voice OS images this hive plugs into
+- [HiveMind-core](https://github.com/JarbasHiveMind/HiveMind-core) — the hub these containers run
+- [HiveMind-voice-sat](https://github.com/JarbasHiveMind/HiveMind-voice-sat) — the voice satellite client
+- [HiveMind community docs](https://jarbashivemind.github.io/HiveMind-community-docs/) — the protocol and architecture
 
 ## Contributing
 
