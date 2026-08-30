@@ -10,6 +10,7 @@ ARG GIT_SHA=unknown
 
 ARG BUILD_DATE=unknown
 ARG VERSION=unknown
+ARG OVOS_RELEASES_REF=main
 
 LABEL org.opencontainers.image.title="HiveMind OCI HiveMind listener" \
       org.opencontainers.image.description="Start listening for HiveMind connections" \
@@ -28,7 +29,6 @@ LABEL org.opencontainers.image.title="HiveMind OCI HiveMind listener" \
 
 ARG CHANNEL=alpha
 ARG UV_PRERELEASE=never
-ARG OVOS_RELEASES_REF=main
 ARG USER=hivemind
 
 # The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD
