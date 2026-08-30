@@ -55,6 +55,30 @@ This command will:
 
 Grab a coffee—or a pint of honey—while Docker works its magic.
 
+## Image Tags
+
+Every image is published for `linux/amd64` and `linux/arm64` under [docker.io/smartgic](https://hub.docker.com/u/smartgic), one tag per channel — the same channels as [ovos-installer](https://github.com/OpenVoiceOS/ovos-installer):
+
+| Tag | Channel | Versions come from |
+| --- | ------- | ------------------ |
+| `alpha` | pre-releases | `constraints-alpha.txt` in [ovos-releases](https://github.com/OpenVoiceOS/ovos-releases) |
+| `testing` | release candidates | `constraints-testing.txt` |
+| `stable` | releases | `constraints-stable.txt` |
+| `latest` | alias of `stable` | — |
+
+A dated `<channel>-YYYYMMDD` tag is kept for each publish, and every image is also pushed to the GHCR mirror `ghcr.io/jarbashivemind/hivemind-docker` (no pull-rate limit) and signed with cosign. If a container misbehaves after a pull, pin the previous day's dated tag and open an issue.
+
+## Automation
+
+| Workflow | When | What |
+| -------- | ---- | ---- |
+| PR build | every pull request | dry-builds the images the PR touches, both architectures |
+| Publish on push | merge on `dev` | rebuilds + publishes what changed, every channel |
+| Publish on constraints change | hourly | rebuilds images whose pinned packages moved in ovos-releases |
+| Weekly rebuild | Tuesdays | full rebuild per channel, so base-OS fixes always land |
+
+The workflows are thin callers of ovos-docker's reusable [`build-images.yml`](https://github.com/OpenVoiceOS/ovos-docker/blob/dev/.github/workflows/build-images.yml) — images are verified (manifest, per-arch smoke run) before the channel tag moves, and what each channel was built from is recorded on the `build-state` branch.
+
 ## Build Images (Buildx Bake)
 
 Builds are handled via Docker Buildx Bake (`docker-bake.hcl` and `scripts/bake.sh`). Direct
@@ -75,9 +99,12 @@ Defaults are defined in `docker-bake.hcl` and `scripts/bake.sh`:
 - `REGISTRY` (default `docker.io/smartgic`)
 - `TAG` and `VERSION` (default `alpha`)
 - `LATEST_TAG` (default `latest`, only applied when `TAG=stable`)
-- `CHANNEL` (default `alpha`)
+- `CHANNEL` (default `alpha`): which `constraints-<channel>.txt` pins the installs
+- `OVOS_RELEASES_REF` (default `main`): git ref of ovos-releases to take the constraints from
 - `PLATFORMS` (default `linux/amd64,linux/arm64`)
-- `UV_PRERELEASE` (default `allow`)
+- `UV_PRERELEASE` (default `allow`): uv prerelease policy (`never` outside alpha)
+- `MIRROR_REGISTRY` (default empty; CI uses `ghcr.io/jarbashivemind/hivemind-docker`)
+- `CACHE_REPO`/`CACHE_TO`: GHCR build cache (`hivemind-docker-cache`); leave `CACHE_TO` empty locally
 - `ENSURE_BINFMT` (default `auto`, set `true` to force or `false` to skip)
 - `BUILDER` (default `hivemind-bake`)
 

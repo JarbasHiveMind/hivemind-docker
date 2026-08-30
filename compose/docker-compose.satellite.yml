@@ -1,11 +1,19 @@
 ---
-version: "3.9"
-
 x-podman:
   &podman
+  init: true
   userns_mode: keep-id
   security_opt:
     - "label=disable"
+
+x-hardened: &hardened
+  userns_mode: keep-id
+  init: true
+  security_opt:
+    - "label=disable"
+    - "no-new-privileges:true"
+  cap_drop:
+    - ALL
 
 x-logging:
   &default-logging
@@ -13,8 +21,8 @@ x-logging:
   options:
     mode: non-blocking
     max-buffer-size: 4m
-    max-size: "200m"
-    max-file: "1"
+    max-size: "10m"
+    max-file: "3"
 
 volumes:
   ovos_models:
@@ -44,6 +52,7 @@ services:
       VOICE_SAT_PASSWORD: $VOICE_SAT_PASSWORD
       VOICE_SAT_HOST: $VOICE_SAT_HOST
       VOICE_SAT_PORT: $VOICE_SAT_PORT
+      HIVEMIND_SITEID: ${HIVEMIND_SITEID:-default}
       XDG_RUNTIME_DIR: $XDG_RUNTIME_DIR
     devices:
       - /dev/snd
@@ -57,7 +66,7 @@ services:
       - ${XDG_RUNTIME_DIR}/pulse:${XDG_RUNTIME_DIR}/pulse:ro
 
   hivemind_cli:
-    <<: *podman
+    <<: *hardened
     container_name: hivemind_cli
     hostname: hivemind_cli
     restart: unless-stopped
