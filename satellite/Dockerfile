@@ -10,6 +10,7 @@ ARG GIT_SHA=unknown
 
 ARG BUILD_DATE=unknown
 ARG VERSION=unknown
+ARG OVOS_RELEASES_REF=main
 
 LABEL org.opencontainers.image.title="HiveMind Voice Satellite" \
       org.opencontainers.image.description="Voice Satellite connect to a HiveMind Listener in order to speak with the Open Voice OS message bus" \
@@ -28,7 +29,6 @@ LABEL org.opencontainers.image.title="HiveMind Voice Satellite" \
 
 ARG CHANNEL=alpha
 ARG UV_PRERELEASE=never
-ARG OVOS_RELEASES_REF=main
 ARG USER=hivemind
 
 # The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD

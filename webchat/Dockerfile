@@ -10,6 +10,7 @@ ARG GIT_SHA=unknown
 
 ARG BUILD_DATE=unknown
 ARG VERSION=unknown
+ARG OVOS_RELEASES_REF=main
 
 LABEL org.opencontainers.image.title="HiveMind OCI WebChat" \
       org.opencontainers.image.description="Connecting to the HiveMind with javascript reference implementation" \
@@ -28,7 +29,6 @@ LABEL org.opencontainers.image.title="HiveMind OCI WebChat" \
 
 ARG CHANNEL=alpha
 ARG UV_PRERELEASE=never
-ARG OVOS_RELEASES_REF=main
 ARG USER=hivemind
 
 # The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD
