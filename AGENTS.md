@@ -44,10 +44,15 @@ the wire protocol and specs live in the architecture docs.
   (`docker-compose.satellite.yml`, pointed at a hub via
   `VOICE_SAT_HOST`/`VOICE_SAT_PORT`), and the chatroom / webchat / matrix-bot
   bridges. `.env-example` documents every variable with placeholders.
-- There is no test suite, no linter config, and no CI workflow in this repo —
-  say so plainly rather than inventing one. Validate a change by actually
-  building the affected image (`docker build -t test ./listener` etc.) and,
-  where practical, bringing the compose stack up against a real or test hub.
+- CI lives in `.github/workflows/`: `pull-request.yml` dry-builds the images a
+  PR touches, `on-push.yml` publishes what a merge on `dev` changed for every
+  channel, `on-constraints.yml` (hourly) rebuilds images whose pinned packages
+  moved in ovos-releases, `scheduled-rebuild.yml` rebuilds each channel weekly,
+  and `record-state.yml` writes the `build-state` branch. They are thin callers
+  of OpenVoiceOS/ovos-docker's reusable `build-images.yml` (pinned to a
+  release tag) with the vendored `scripts/affected.py`, `scripts/ci/smoke.sh`
+  and `scripts/ci/record-state.py`. Deeper validation still means building the
+  affected image locally via `scripts/bake.sh`.
 - Each Dockerfile takes `ARG TAG=alpha` (which base-image tag to build from),
   `ARG CHANNEL` + `ARG OVOS_RELEASES_REF` (which
   `constraints-<channel>.txt` from OpenVoiceOS/ovos-releases pins the
