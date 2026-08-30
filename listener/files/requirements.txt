@@ -1,11 +1,9 @@
 hivemind-bus-client
-hivemind-core==4.6.0a2
-# plugin-manager + websocket transport are pulled in (and version-constrained)
-# transitively by hivemind-core; declared here too so the bundled image is
-# explicit about its protocol stack.
+hivemind-core
+# plugin-manager + transports are pulled in (and version-constrained) transitively by
+# hivemind-core; declared here too so the bundled image is explicit about its protocol stack.
 hivemind-plugin-manager
 hivemind-websocket-protocol
 hivemind-http-protocol
 hivemind-audio-binary-protocol
-hivemind-redis-database==0.1.0a7
-setuptools
+hivemind-redis-database

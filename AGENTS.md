@@ -22,15 +22,17 @@ the wire protocol and specs live in the architecture docs.
 
 ## Layout / build / test
 
-- `base/Dockerfile` — Debian bookworm-slim + a `hivemind` user venv; parent
-  image for everything else.
+- `base/Dockerfile` — digest-pinned `python:3.13-slim-trixie` (one `PYTHON_IMAGE`
+  arg feeds FROM and the `base.name` label) + a `hivemind` user venv with a
+  pinned static `uv`; parent image for everything else.
 - `sound-base/Dockerfile` — adds PulseAudio/PipeWire/ALSA tooling on top of
   `base`, for audio-capable images.
-- `cli/Dockerfile` + `cli/files/requirements.txt` — installs `HiveMind-cli`
-  and `HiveMind-core` from git; entrypoint is `sleep infinity` (exec into it).
+- `cli/Dockerfile` + `cli/files/requirements.txt` — installs `hivemind-cli`
+  and `hivemind-core` from PyPI; entrypoint is `sleep infinity` (exec into it).
 - `listener/Dockerfile` + `listener/files/requirements.txt` — installs
-  `hivemind_bus_client`, `HiveMind-core` (from git), and `HiveMind-presence`;
-  entrypoint is `hivemind-core listen`.
+  `hivemind-core` and its protocol stack from PyPI; the entrypoint execs
+  `hivemind-core listen` and the image healthchecks its own websocket
+  handshake on `${HIVEMIND_PORT:-5678}`.
 - `satellite/Dockerfile` + `satellite/files/{requirements.txt,entrypoint.sh}`
   — built on `sound-base`; installs `HiveMind-voice-sat` and OVOS
   audio/STT/TTS/VAD/wake-word plugins; the entrypoint script installs any
@@ -44,10 +46,12 @@ the wire protocol and specs live in the architecture docs.
   say so plainly rather than inventing one. Validate a change by actually
   building the affected image (`docker build -t test ./listener` etc.) and,
   where practical, bringing the compose stack up against a real or test hub.
-- Each Dockerfile takes `ARG TAG=alpha` (which base-image tag to build from)
-  and `ARG ALPHA=false` (whether to `pip install --pre`). Building
-  `listener`/`cli`/`satellite` requires the corresponding base image to exist
-  locally or be pullable first.
+- Each Dockerfile takes `ARG TAG=alpha` (which base-image tag to build from),
+  `ARG CHANNEL` + `ARG OVOS_RELEASES_REF` (which
+  `constraints-<channel>.txt` from OpenVoiceOS/ovos-releases pins the
+  installs) and `ARG UV_PRERELEASE` (uv prerelease policy; `allow` on the
+  alpha channel). Bake's `contexts` wire the base images, so build through
+  `docker buildx bake` / `scripts/bake.sh`, not `docker build`.
 
 ## Working agreement (org-wide law)
 
@@ -77,18 +81,15 @@ the wire protocol and specs live in the architecture docs.
 
 ## Dependencies
 
-- **Floor pins only** (`>=X.Y.Za1`), bumped when a feature or fix is actually
-  needed — with a one-line comment saying why. No upper caps unless a specific
-  released version is genuinely broken (say which and why).
-- **No lockfiles, ever.** These images target the latest alphas
-  (`ALPHA=true` builds with `pip install --pre`); prefer `uv` over bare `pip`
-  in any Dockerfile RUN step you touch, if the base image has it available.
-- Python package pins live in each image's `files/requirements.txt`, not in a
-  root manifest — this repo has no `pyproject.toml`/`package.json` of its own.
-  `listener` and `cli` currently install `HiveMind-core`/`HiveMind-cli`
-  straight from GitHub (`git+https://...`); prefer a published PyPI alpha
-  when practical, but do not silently rewrite this without confirming a
-  released alpha actually exists.
+- **Versions come from the channel constraints file**, not from manual pins:
+  every install runs `uv pip install -c /tmp/constraints.txt` against
+  `constraints-<channel>.txt` from OpenVoiceOS/ovos-releases, the resolved,
+  mutually-consistent set for that channel. `files/requirements.txt` lists
+  bare package names (what the image contains); add a floor or pin there only
+  when a specific released version is genuinely broken, with a one-line
+  comment saying which and why (see matrix-bot).
+- **No lockfiles.** Prerelease policy is the `UV_PRERELEASE` build arg
+  (`allow` on alpha); prefer `uv` over bare `pip` in any RUN step you touch.
 - Apache-2.0. Do not add GPL/AGPL dependencies.
 
 ## Tests

@@ -1,7 +1,4 @@
-# hivemind-cli 0.5.1a1 jumped to ovos-bus-client 2.x, which no released
-# hivemind-core supports yet (core is still 1.x; see core#108). Pin 0.5.0a4,
-# the latest CLI alpha still on bus-client <2.0.0, so it co-installs with
-# hivemind-core 4.6.0a2.
-hivemind-cli==0.5.0a4
-hivemind-core==4.6.0a2
+hivemind-cli
+# admin console: the hub's own CLI (add-client, list-clients, ...) next to hivemind-cli
+hivemind-core
 lxml>=5.1.0

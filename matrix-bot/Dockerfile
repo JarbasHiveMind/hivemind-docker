@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
 ARG TAG=alpha
 ARG REGISTRY=docker.io/smartgic
 ARG BASE_IMAGE=${REGISTRY}/hivemind-base:${TAG}
@@ -20,14 +20,20 @@ LABEL org.opencontainers.image.title="HiveMind OCI Matrix bot" \
       org.opencontainers.image.vendor="HiveMind" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="HiveMind Community" \
-      org.opencontainers.image.base.name="${REGISTRY}/hivemind-base:${TAG}" \
+      org.opencontainers.image.base.name="${BASE_IMAGE}" \
       org.opencontainers.image.url="https://jarbashivemind.github.io/HiveMind-community-docs/" \
       org.opencontainers.image.ref.name="${REGISTRY}/hivemind-matrix-bot:${TAG}" \
-      org.opencontainers.image.revision="${GIT_SHA}"
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      io.openvoiceos.constraints.ref="${OVOS_RELEASES_REF}"
 
-ARG ALPHA=false
+ARG CHANNEL=alpha
 ARG UV_PRERELEASE=never
+ARG OVOS_RELEASES_REF=main
 ARG USER=hivemind
+
+# The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD
+# checksums the remote file, so the layer cache busts exactly when the constraints change.
+ADD --chmod=0644 https://raw.githubusercontent.com/OpenVoiceOS/ovos-releases/${OVOS_RELEASES_REF}/constraints-${CHANNEL}.txt /tmp/constraints.txt
 
 COPY files/requirements.txt /tmp/requirements.txt
 COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -37,9 +43,7 @@ USER root
 SHELL ["/bin/bash", "-c"]
 
 RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked \
-    PRERELEASE="${UV_PRERELEASE}" \
- && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
- && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+    uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt -r /tmp/requirements.txt \
  && rm -rf /tmp/* /var/tmp/*
 
 USER "$USER"
