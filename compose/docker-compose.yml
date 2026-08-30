@@ -1,11 +1,19 @@
 ---
-version: "3.9"
-
 x-podman:
   &podman
+  init: true
   userns_mode: keep-id
   security_opt:
     - "label=disable"
+
+x-hardened: &hardened
+  userns_mode: keep-id
+  init: true
+  security_opt:
+    - "label=disable"
+    - "no-new-privileges:true"
+  cap_drop:
+    - ALL
 
 x-logging:
   &default-logging
@@ -13,8 +21,8 @@ x-logging:
   options:
     mode: non-blocking
     max-buffer-size: 4m
-    max-size: "200m"
-    max-file: "1"
+    max-size: "10m"
+    max-file: "3"
 
 volumes:
   hivemind_local_state:
@@ -23,7 +31,7 @@ volumes:
     
 services:
   hivemind_listener:
-    <<: *podman
+    <<: *hardened
     container_name: hivemind_listener
     hostname: hivemind_listener
     restart: unless-stopped
@@ -42,9 +50,9 @@ services:
       - hivemind_local_state:/home/${HIVEMIND_USER}/.local/state/hivemind
 
   hivemind_cli:
-    <<: *podman
-    container_name: ovos_hivemind_cli
-    hostname: ovos_hivemind_cli
+    <<: *hardened
+    container_name: hivemind_cli
+    hostname: hivemind_cli
     restart: unless-stopped
     image: docker.io/smartgic/hivemind-cli:${VERSION}
     logging: *default-logging

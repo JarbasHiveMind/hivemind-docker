@@ -39,9 +39,11 @@ the wire protocol and specs live in the architecture docs.
   extra packages listed in a mounted `satellite.list`, detects PulseAudio vs
   PipeWire, and execs `hivemind-voice-sat` with credentials from environment
   variables.
-- `compose/docker-compose.yml` + `compose/.env-example` — the only compose
-  service defined today is the voice satellite, pointed at an external
-  hub via `VOICE_SAT_HOST`/`VOICE_SAT_PORT`.
+- `compose/` — one compose file per deployment: the hub
+  (`docker-compose.yml`: listener + cli), the voice satellite
+  (`docker-compose.satellite.yml`, pointed at a hub via
+  `VOICE_SAT_HOST`/`VOICE_SAT_PORT`), and the chatroom / webchat / matrix-bot
+  bridges. `.env-example` documents every variable with placeholders.
 - There is no test suite, no linter config, and no CI workflow in this repo —
   say so plainly rather than inventing one. Validate a change by actually
   building the affected image (`docker build -t test ./listener` etc.) and,
@@ -114,8 +116,8 @@ the wire protocol and specs live in the architecture docs.
   itself only ever references `${VAR}` interpolations, never literal
   credentials — if a change needs a concrete value for local testing, put it
   in a local `.env` (untracked) and add the variable to `.env-example` with a
-  placeholder, never a real one. There is no `.gitignore` in this repo yet;
-  do not commit a real `.env` file.
+  placeholder, never a real one. `.gitignore` excludes `.env`;
+  still, never commit a real `.env` file.
 - **First-run credential bootstrap is the hub's job, not this repo's.** The
   satellite container only consumes an already-issued `VOICE_SAT_KEY` /
   `VOICE_SAT_PASSWORD` pair via environment variables passed at container

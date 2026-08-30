@@ -1,22 +1,30 @@
 ---
-version: "3.9"
-
 x-podman: &podman
+  init: true
   userns_mode: keep-id
   security_opt:
     - "label=disable"
+
+x-hardened: &hardened
+  userns_mode: keep-id
+  init: true
+  security_opt:
+    - "label=disable"
+    - "no-new-privileges:true"
+  cap_drop:
+    - ALL
 
 x-logging: &default-logging
   driver: json-file
   options:
     mode: non-blocking
     max-buffer-size: 4m
-    max-size: "200m"
-    max-file: "1"
+    max-size: "10m"
+    max-file: "3"
 
 services:
   hivemind_chatroom:
-    <<: *podman
+    <<: *hardened
     container_name: hivemind_chatroom
     hostname: hivemind_chatroom
     restart: unless-stopped
