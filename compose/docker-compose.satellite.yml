@@ -15,6 +15,22 @@ x-hardened: &hardened
   cap_drop:
     - ALL
 
+x-resource-limits: &resource-limits
+  deploy:
+    resources:
+      limits:
+        memory: ${STANDARD_MEMORY_LIMIT:-1G}
+      reservations:
+        memory: 64M
+
+x-light-resource-limits: &light-resource-limits
+  deploy:
+    resources:
+      limits:
+        memory: ${LIGHT_MEMORY_LIMIT:-512M}
+      reservations:
+        memory: 32M
+
 x-logging:
   &default-logging
   driver: json-file
@@ -37,7 +53,7 @@ volumes:
 
 services:
   hivemind_satellite:
-    <<: *podman
+    <<: [*podman, *resource-limits]
     container_name: hivemind_satellite
     hostname: hivemind_satellite
     restart: unless-stopped
@@ -66,7 +82,7 @@ services:
       - ${XDG_RUNTIME_DIR}/pulse:${XDG_RUNTIME_DIR}/pulse:ro
 
   hivemind_cli:
-    <<: *hardened
+    <<: [*hardened, *light-resource-limits]
     container_name: hivemind_cli
     hostname: hivemind_cli
     restart: unless-stopped

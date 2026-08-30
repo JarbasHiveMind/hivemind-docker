@@ -15,6 +15,22 @@ x-hardened: &hardened
   cap_drop:
     - ALL
 
+x-resource-limits: &resource-limits
+  deploy:
+    resources:
+      limits:
+        memory: ${STANDARD_MEMORY_LIMIT:-1G}
+      reservations:
+        memory: 64M
+
+x-light-resource-limits: &light-resource-limits
+  deploy:
+    resources:
+      limits:
+        memory: ${LIGHT_MEMORY_LIMIT:-512M}
+      reservations:
+        memory: 32M
+
 x-logging:
   &default-logging
   driver: json-file
@@ -31,7 +47,9 @@ volumes:
     
 services:
   hivemind_listener:
-    <<: *hardened
+    <<: [*hardened, *resource-limits]
+    # the hub is the last thing the kernel should kill
+    oom_score_adj: -500
     container_name: hivemind_listener
     hostname: hivemind_listener
     restart: unless-stopped
@@ -50,7 +68,7 @@ services:
       - hivemind_local_state:/home/${HIVEMIND_USER}/.local/state/hivemind
 
   hivemind_cli:
-    <<: *hardened
+    <<: [*hardened, *light-resource-limits]
     container_name: hivemind_cli
     hostname: hivemind_cli
     restart: unless-stopped
