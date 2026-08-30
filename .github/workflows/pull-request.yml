@@ -48,7 +48,7 @@ jobs:
     name: alpha (dry run)
     needs: select
     if: needs.select.outputs.count != '0'
-    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@v2.0.1
+    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@v2.0.2
     with:
       channel: alpha
       targets: ${{ needs.select.outputs.targets }}

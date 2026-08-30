@@ -96,7 +96,7 @@ A dated `<channel>-YYYYMMDD` tag is kept for each publish, and every image is al
 | Publish on constraints change | hourly | rebuilds images whose pinned packages moved in ovos-releases |
 | Weekly rebuild | Tuesdays | full rebuild per channel, so base-OS fixes always land |
 
-The workflows are thin callers of ovos-docker's reusable [`build-images.yml@v2.0.1`](https://github.com/OpenVoiceOS/ovos-docker/blob/v2.0.1/.github/workflows/build-images.yml) — the exact CI that builds the ovos-docker images. An image is verified (manifest, per-arch smoke run) before its channel tag moves, published to Docker Hub and the GHCR mirror, cosign-signed, and what each channel was built from is recorded on the `build-state` branch. Verify a signature with:
+The workflows are thin callers of ovos-docker's reusable [`build-images.yml@v2.0.2`](https://github.com/OpenVoiceOS/ovos-docker/blob/v2.0.2/.github/workflows/build-images.yml) — the exact CI that builds the ovos-docker images. An image is verified (manifest, per-arch smoke run) before its channel tag moves, published to Docker Hub and the GHCR mirror, cosign-signed, and what each channel was built from is recorded on the `build-state` branch. Verify a signature with:
 
 ```bash
 cosign verify \
