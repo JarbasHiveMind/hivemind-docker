@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
 # sound-base/Dockerfile
 # Multi-stage to compile pyalsaaudio without shipping toolchains.
 
@@ -18,6 +18,7 @@ ARG BUILD_DATE=unknown
 ARG VERSION=unknown
 ARG IMAGE_REF=${REGISTRY}/hivemind-sound-base:${TAG}
 ARG GIT_SHA=unknown
+ARG OVOS_RELEASES_REF=main
 
 LABEL org.opencontainers.image.title="HiveMind OCI sound base image" \
       org.opencontainers.image.description="Sound base layer for audio related images" \
@@ -31,7 +32,8 @@ LABEL org.opencontainers.image.title="HiveMind OCI sound base image" \
       org.opencontainers.image.base.name="${BASE_IMAGE}" \
       org.opencontainers.image.url="https://jarbashivemind.github.io/HiveMind-community-docs/" \
       org.opencontainers.image.ref.name="${IMAGE_REF}" \
-      org.opencontainers.image.revision="${GIT_SHA}"
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      io.openvoiceos.constraints.ref="${OVOS_RELEASES_REF}"
 
 ARG USER=hivemind
 USER root

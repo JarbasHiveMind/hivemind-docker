@@ -1,1 +1,1 @@
-hivemind-webchat==0.2.2
+hivemind-webchat>=0.2.2

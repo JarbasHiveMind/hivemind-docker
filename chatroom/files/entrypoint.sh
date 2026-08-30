@@ -26,4 +26,4 @@ if ! hivemind_set_identity "$SAT_KEY" "$SAT_PASSWORD" "$SAT_HOST" "$SAT_PORT"; t
     exit 1
 fi
 
-hivemind-flask-chatroom
+exec hivemind-flask-chatroom

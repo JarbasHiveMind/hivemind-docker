@@ -34,12 +34,8 @@ function run_matrix() {
     local matrixhost=$3
     local room=$4
 
-    if ! HiveMind-matrix run --botname "$botname" --matrixtoken "$matrixtoken" --matrixhost "$matrixhost" --room "$room"; then
-        echo "Error: Failed to start Matrix bot."
-        return 1
-    fi
-
-    return 0
+    # exec: the bot becomes PID 1 so container signals reach it directly
+    exec HiveMind-matrix run --botname "$botname" --matrixtoken "$matrixtoken" --matrixhost "$matrixhost" --room "$room"
 }
 
 if ! hivemind_set_identity "$VOICE_SAT_KEY" "$VOICE_SAT_PASSWORD" "$VOICE_SAT_HOST" "$VOICE_SAT_PORT"; then

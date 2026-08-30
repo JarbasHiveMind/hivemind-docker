@@ -15,8 +15,5 @@ if test -f "$listener_list"; then
     fi
 fi
 
-# Run hivemind-core
-if ! hivemind-core listen; then
-    echo "Error: Failed to start hivemind-core"
-    exit 1
-fi
+# Run hivemind-core as PID 1 so container signals reach it directly
+exec hivemind-core listen

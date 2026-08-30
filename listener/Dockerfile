@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.7
+# syntax=docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
 ARG TAG=alpha
 ARG REGISTRY=docker.io/smartgic
 ARG BASE_IMAGE=${REGISTRY}/hivemind-base:${TAG}
@@ -20,14 +20,20 @@ LABEL org.opencontainers.image.title="HiveMind OCI HiveMind listener" \
       org.opencontainers.image.vendor="HiveMind" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="HiveMind Community" \
-      org.opencontainers.image.base.name="${REGISTRY}/hivemind-base:${TAG}" \
+      org.opencontainers.image.base.name="${BASE_IMAGE}" \
       org.opencontainers.image.url="https://jarbashivemind.github.io/HiveMind-community-docs/" \
       org.opencontainers.image.ref.name="${REGISTRY}/hivemind-listener:${TAG}" \
-      org.opencontainers.image.revision="${GIT_SHA}"
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      io.openvoiceos.constraints.ref="${OVOS_RELEASES_REF}"
 
-ARG ALPHA=false
+ARG CHANNEL=alpha
 ARG UV_PRERELEASE=never
+ARG OVOS_RELEASES_REF=main
 ARG USER=hivemind
+
+# The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD
+# checksums the remote file, so the layer cache busts exactly when the constraints change.
+ADD --chmod=0644 https://raw.githubusercontent.com/OpenVoiceOS/ovos-releases/${OVOS_RELEASES_REF}/constraints-${CHANNEL}.txt /tmp/constraints.txt
 
 COPY files/requirements.txt /tmp/requirements.txt
 COPY --chmod=0755 files/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -43,8 +49,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get update \
  && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends --no-install-suggests \
       build-essential python3-dev \
- && PRERELEASE="${UV_PRERELEASE}" \
- && if [ "${ALPHA}" = "true" ]; then PRERELEASE="allow"; fi \
  && if [ -s /run/secrets/github_token ]; then \
       printf '%s\n' \
         '#!/bin/sh' \
@@ -55,7 +59,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       && chmod 0700 /tmp/git-askpass \
       && export GIT_ASKPASS=/tmp/git-askpass GIT_TERMINAL_PROMPT=0; \
     fi \
- && uv pip install --prerelease="${PRERELEASE}" -r /tmp/requirements.txt \
+ && uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt -r /tmp/requirements.txt \
  && rm -f /tmp/git-askpass \
  && mkdir -p \
       "/home/${USER}/.config/hivemind" \
@@ -70,6 +74,12 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 USER "$USER"
 
+# A successful websocket handshake proves hivemind-core is accepting connections.
+HEALTHCHECK --interval=60s --timeout=10s --retries=3 --start-period=60s \
+  CMD python -c 'import os, websocket; websocket.create_connection("ws://127.0.0.1:%s" % os.environ.get("HIVEMIND_PORT", "5678"), timeout=5).close()' || exit 1
+
 ENTRYPOINT ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 
 WORKDIR "/home/${USER}"
+
+EXPOSE 5678

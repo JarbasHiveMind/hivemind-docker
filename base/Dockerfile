@@ -1,11 +1,15 @@
-# syntax=docker/dockerfile:1.7
-FROM python:3.13.11-slim-trixie@sha256:56ab277ddf459858f94052252565945c34617c841818faf8f34f6896de06cffe
+# syntax=docker/dockerfile:1.26@sha256:ecfaec9ed6d810b56388c508f4121597bfbba70d41a6dfeee4d8cad5f295fc32
+# One reference for FROM and the base.name label, so a Renovate bump updates both.
+ARG PYTHON_IMAGE=python:3.13.15-slim-trixie@sha256:7ce4b6dfe35e55397b7cda544f8a13f191b7ae28dc5aad71fe664dbc9bc2623f
+FROM ${PYTHON_IMAGE}
+ARG PYTHON_IMAGE
 
 ARG BUILD_DATE=unknown
 ARG CHANNEL=alpha
 ARG VERSION=unknown
 ARG IMAGE_REF=hivemind-base:alpha
 ARG GIT_SHA=unknown
+ARG OVOS_RELEASES_REF=main
 
 LABEL org.opencontainers.image.title="HiveMind OCI base image" \
       org.opencontainers.image.description="Used as base layer for other OCI images" \
@@ -16,20 +20,28 @@ LABEL org.opencontainers.image.title="HiveMind OCI base image" \
       org.opencontainers.image.vendor="HiveMind" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.authors="HiveMind Community" \
-      org.opencontainers.image.base.name="python:3.13.11-slim-trixie@sha256:56ab277ddf459858f94052252565945c34617c841818faf8f34f6896de06cffe" \
+      org.opencontainers.image.base.name="${PYTHON_IMAGE}" \
       org.opencontainers.image.url="https://jarbashivemind.github.io/HiveMind-community-docs/" \
       org.opencontainers.image.ref.name="${IMAGE_REF}" \
-      org.opencontainers.image.revision="${GIT_SHA}"
+      org.opencontainers.image.revision="${GIT_SHA}" \
+      io.openvoiceos.constraints.ref="${OVOS_RELEASES_REF}"
 
 ARG USER=hivemind
 ARG USER_UID=1000
 ARG USER_GID=1000
 
+# uv as a pinned static binary (Renovate tracks the image reference); no unpinned "pip install uv"
+COPY --from=ghcr.io/astral-sh/uv:0.12.7@sha256:95f2aa1fe59274951cfe9b0cbc7972e879ff1004bc8945d130a32eb0dbd85945 /uv /uvx /usr/local/bin/
+
+# MALLOC_ARENA_MAX=2: the services are heavily threaded; fewer glibc arenas means less RSS on small devices.
 ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    UV_LINK_MODE=copy \
+    UV_COMPILE_BYTECODE=1 \
+    MALLOC_ARENA_MAX=2
 
 SHELL ["/bin/bash", "-c"]
 
@@ -51,12 +63,16 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     fi \
  && rm -rf /var/log/{apt,dpkg.log} /tmp/* /var/tmp/*
 
-RUN --mount=type=cache,target=/root/.cache/pip \
+# The venv keeps the pip bundled with the (digest-pinned) Python image. setuptools is still needed
+# at runtime by packages using pkg_resources; pinned like ovos-installer does (setuptools<82).
+# Bytecode is compiled at install time (UV_COMPILE_BYTECODE) so services start fast on small
+# devices; PYTHONDONTWRITEBYTECODE keeps the running container from writing .pyc files.
+RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked \
     groupadd --gid "$USER_GID" "$USER" \
  && useradd --no-log-init --uid "$USER_UID" --gid "$USER_GID" -m -c "HiveMind user" "$USER" \
  && python -m venv "/home/${USER}/.venv" \
  && source "/home/${USER}/.venv/bin/activate" \
- && PIP_NO_CACHE_DIR=0 pip install --upgrade pip setuptools wheel uv \
+ && uv pip install "setuptools<82" \
  && mkdir -p "/home/${USER}"/.{config,cache,local/{state,share}}/{hivemind,hivemind-core,mycroft} \
  && chown "${USER}:${USER}" -R "/home/${USER}"
 

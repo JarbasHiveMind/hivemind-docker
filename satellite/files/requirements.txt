@@ -10,5 +10,8 @@ ovos-PHAL-plugin-ipgeo
 ovos-stt-plugin-chromium
 ovos-tts-plugin-polly
 ovos-vad-plugin-webrtcvad
-ovos-ww-plugin-openwakeword
-ovos-ww-plugin-precise-lite
+# tflite-based wake-word plugins (openwakeword, precise-lite) cannot install on
+# Python 3.13 (no cp313 tflite-runtime wheel; openwakeword also pins numpy<2);
+# precise-onnx runs the same precise models on onnxruntime, vosk needs no models.
+ovos-ww-plugin-precise-onnx
+ovos-ww-plugin-vosk

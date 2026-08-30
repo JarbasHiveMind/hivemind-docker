@@ -32,7 +32,7 @@ fi
 
 # Check if _identify file exists and leverage it
 if test -f "$identity_file"; then
-    hivemind-voice-sat
+    exec hivemind-voice-sat
 else
-    hivemind-voice-sat --key "$VOICE_SAT_KEY" --password "$VOICE_SAT_PASSWORD" --host "$VOICE_SAT_HOST" --port "$VOICE_SAT_PORT" --siteid "$HIVEMIND_SITEID"
+    exec hivemind-voice-sat --key "$VOICE_SAT_KEY" --password "$VOICE_SAT_PASSWORD" --host "$VOICE_SAT_HOST" --port "$VOICE_SAT_PORT" --siteid "$HIVEMIND_SITEID"
 fi
