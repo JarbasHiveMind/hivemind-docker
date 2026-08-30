@@ -60,4 +60,8 @@ jobs:
       targets: ${{ needs.select.outputs.targets }}
       push: true
       mirror_registry: ghcr.io/jarbashivemind/hivemind-docker
-    secrets: inherit
+    secrets:
+      # secrets: inherit does not cross organization boundaries (the reusable
+      # workflow lives in OpenVoiceOS); they must be passed explicitly.
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
