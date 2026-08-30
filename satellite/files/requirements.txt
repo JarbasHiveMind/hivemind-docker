@@ -11,7 +11,7 @@ ovos-stt-plugin-chromium
 ovos-tts-plugin-polly
 ovos-vad-plugin-webrtcvad
 # tflite-based wake-word plugins (openwakeword, precise-lite) cannot install on
-# Python 3.13 (no cp313 tflite-runtime wheel; openwakeword also pins numpy<2);
-# precise-onnx runs the same precise models on onnxruntime, vosk needs no models.
-ovos-ww-plugin-precise-onnx
+# Python 3.13 (no cp313 tflite-runtime wheel; openwakeword also pins numpy<2).
+# vosk works on every channel; precise-onnx is channel-dependent and installed
+# by the Dockerfile where the channel's constraints allow it.
 ovos-ww-plugin-vosk

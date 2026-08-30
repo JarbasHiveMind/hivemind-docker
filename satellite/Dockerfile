@@ -49,6 +49,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
  && apt-get install -o Dpkg::Options::="--force-confold" -y --no-install-recommends --no-install-suggests \
       libatomic1 libasound2-dev libportaudio2 portaudio19-dev libpulse-dev build-essential python3-dev mpv \
  && uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt -r /tmp/requirements.txt \
+ # precise-onnx needs ovos-plugin-manager>=1, which the stable channel does not have yet
+ # (its ovos-audio-plugin-mpv still pins opm<0.10); vosk covers wake word where this skips
+ && (uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt ovos-ww-plugin-precise-onnx \
+     || echo "ovos-ww-plugin-precise-onnx unavailable on this channel; vosk wake word remains") \
  && mkdir -p \
       "/home/${USER}/.config/hivemind" \
       "/home/${USER}/.config/mycroft" \
