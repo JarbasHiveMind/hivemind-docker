@@ -1,4 +1,4 @@
-FROM python:3.12-slim@sha256:09f7da3bc104798d0afb40bc08d23ab2da20a76130cec1f2ef170848f5d85217
+FROM python:3.13-slim@sha256:7ce4b6dfe35e55397b7cda544f8a13f191b7ae28dc5aad71fe664dbc9bc2623f
 
 # Second, isolated hivemind-core instance running the hivemind-media-player
 # agent protocol (OCP/audio playback only, no NL query answering).
