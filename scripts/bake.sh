@@ -8,18 +8,21 @@ LATEST_TAG="${LATEST_TAG:-latest}"
 VERSION="${VERSION:-$TAG}"
 CHANNEL="${CHANNEL:-alpha}"
 UV_PRERELEASE="${UV_PRERELEASE:-allow}"
+OVOS_RELEASES_REF="${OVOS_RELEASES_REF:-main}" # git ref of OpenVoiceOS/ovos-releases for constraints-${CHANNEL}.txt
+CACHE_REPO="${CACHE_REPO:-ghcr.io/openvoiceos/ovos-docker-cache}" # build cache on GHCR (read anonymously)
+CACHE_TO="${CACHE_TO:-}"           # "max" to also export the cache (needs GHCR write access; CI does this)
+MIRROR_REGISTRY="${MIRROR_REGISTRY:-}" # optional second registry to push to (CI: ghcr.io/openvoiceos)
 PLATFORMS="${PLATFORMS:-linux/amd64,linux/arm64}"
-TARGETS="${TARGETS:-default}"   # can be "stack services" or individual targets
+TARGETS="${TARGETS:-default}"   # can be "stack services skills guis" or individual targets
 PUSH="${PUSH:-true}"            # true -> --push
 LOAD="${LOAD:-false}"           # true -> --load (local), forces amd64
 CACHE_FROM="${CACHE_FROM:-true}" # true -> use registry cache-from
-PRINT="${PRINT:-false}"         # true -> --print (no build)
 ENSURE_BINFMT="${ENSURE_BINFMT:-auto}" # auto|true|false
 BUILDER_SPECIFIED="false"
 if [[ -n "${BUILDER+x}" ]]; then
   BUILDER_SPECIFIED="true"
 fi
-BUILDER="${BUILDER:-hivemind-bake}" # buildx builder name to use for multi-arch builds
+BUILDER="${BUILDER:-ovos-bake}" # buildx builder name to use for multi-arch builds
 BUILDER_ARG=()
 
 usage() {
@@ -31,13 +34,14 @@ Options:
   -t, --tag TAG               Tag (default: $TAG)
   --latest-tag TAG            Additional tag (default: latest; only used when TAG=stable)
   -v, --version VERSION       Version label (default: $VERSION)
-  -c, --channel CHANNEL       Channel (default: $CHANNEL)
+  -c, --channel CHANNEL       OVOS channel (default: $CHANNEL)
+  --ovos-releases-ref REF     ovos-releases git ref for the constraints file (default: $OVOS_RELEASES_REF)
+  --cache-to MODE             Export build cache to \$CACHE_REPO (min|max; default: off)
   -p, --platforms PLATFORMS   CSV platforms (default: $PLATFORMS)
-  -T, --targets TARGETS       Bake targets: default|stack|services|<target> (default: $TARGETS)
+  -T, --targets TARGETS       Bake targets: default|stack|services|skills|guis|<target> (default: $TARGETS)
   --no-cache-from             Disable cache-from (useful if registry cache is unavailable)
   --no-push                   Build without pushing
   --load                      Build for local use (loads into docker)
-  --print                     Print resolved Bake config (no build)
   --ensure-binfmt             Force binfmt/qemu installation for cross-arch builds
   --no-binfmt                 Skip binfmt/qemu installation
   --builder NAME              Buildx builder name (default: $BUILDER)
@@ -53,12 +57,13 @@ while [[ $# -gt 0 ]]; do
     --latest-tag) LATEST_TAG="$2"; shift 2 ;;
     -v|--version) VERSION="$2"; shift 2 ;;
     -c|--channel) CHANNEL="$2"; shift 2 ;;
+    --ovos-releases-ref) OVOS_RELEASES_REF="$2"; shift 2 ;;
+    --cache-to) CACHE_TO="$2"; shift 2 ;;
     -p|--platforms) PLATFORMS="$2"; shift 2 ;;
     -T|--targets) TARGETS="$2"; shift 2 ;;
     --no-cache-from) CACHE_FROM="false"; shift ;;
     --no-push) PUSH="false"; shift ;;
     --load) LOAD="true"; shift ;;
-    --print) PRINT="true"; shift ;;
     --ensure-binfmt) ENSURE_BINFMT="true"; shift ;;
     --no-binfmt) ENSURE_BINFMT="false"; shift ;;
     --builder) BUILDER="$2"; BUILDER_SPECIFIED="true"; shift 2 ;;
@@ -153,25 +158,20 @@ ensure_builder() {
 # Metadata
 export BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 export GIT_SHA="$(git rev-parse HEAD 2>/dev/null || echo unknown)"
-export REGISTRY TAG LATEST_TAG VERSION CHANNEL UV_PRERELEASE
+export REGISTRY TAG LATEST_TAG VERSION CHANNEL UV_PRERELEASE OVOS_RELEASES_REF CACHE_REPO CACHE_TO MIRROR_REGISTRY
 
-echo "==> REGISTRY=$REGISTRY TAG=$TAG LATEST_TAG=$LATEST_TAG VERSION=$VERSION CHANNEL=$CHANNEL UV_PRERELEASE=$UV_PRERELEASE"
+echo "==> REGISTRY=$REGISTRY TAG=$TAG LATEST_TAG=$LATEST_TAG VERSION=$VERSION CHANNEL=$CHANNEL UV_PRERELEASE=$UV_PRERELEASE OVOS_RELEASES_REF=$OVOS_RELEASES_REF"
 echo "==> BUILD_DATE=$BUILD_DATE GIT_SHA=$GIT_SHA"
-echo "==> TARGETS=$TARGETS PLATFORMS=$PLATFORMS PUSH=$PUSH LOAD=$LOAD CACHE_FROM=$CACHE_FROM PRINT=$PRINT"
+echo "==> TARGETS=$TARGETS PLATFORMS=$PLATFORMS PUSH=$PUSH LOAD=$LOAD CACHE_FROM=$CACHE_FROM"
 
 # Assemble bake args
 BAKE_ARGS=()
-if [[ "$PRINT" == "true" ]]; then
-  PUSH="false"
-  LOAD="false"
-fi
 if [[ "$PUSH" == "true" && "$LOAD" == "true" ]]; then
   echo "Choose either --load or --push, not both"; exit 1
 fi
 [[ "$PUSH" == "true" ]] && BAKE_ARGS+=(--push)
 [[ "$LOAD" == "true" ]] && BAKE_ARGS+=(--load --set '*.platform=linux/amd64')
-[[ "$PRINT" == "true" ]] && BAKE_ARGS+=(--print)
-[[ "$CACHE_FROM" != "true" ]] && BAKE_ARGS+=(--set "*.cache-from=")
+[[ "$CACHE_FROM" != "true" ]] && BAKE_ARGS+=(--set "*.cache-from=" --set "*.cache-to=")
 
 # Set multi-arch platforms unless loading locally
 [[ "$LOAD" != "true" ]] && BAKE_ARGS+=(--set "*.platform=${PLATFORMS}")
@@ -179,11 +179,9 @@ fi
 # Split targets on whitespace for buildx bake.
 read -r -a TARGETS_ARR <<< "$TARGETS"
 
-# Ensure binfmt/qemu for cross-arch builds unless just printing.
-if [[ "$PRINT" != "true" ]]; then
-  ensure_binfmt
-  ensure_builder
-fi
+# Ensure binfmt/qemu for cross-arch builds.
+ensure_binfmt
+ensure_builder
 
 # Run bake from repo root (where docker-bake.hcl lives)
 exec docker buildx bake "${BUILDER_ARG[@]}" "${TARGETS_ARR[@]}" "${BAKE_ARGS[@]}"
