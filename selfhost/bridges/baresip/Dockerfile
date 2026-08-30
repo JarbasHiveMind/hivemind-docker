@@ -3,7 +3,7 @@
 # there). NOT published to PyPI (verified: `pip index versions
 # HiveMind-baresip-bridge` resolves nothing) — installed from this repo
 # checkout, same as ser9's setup does from a local source tarball.
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim@sha256:88200866dfff7ea7f5cbcb6ec7c8a701889efe6fe859fe64d6990e4b07ea4171
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     baresip baresip-core ffmpeg \

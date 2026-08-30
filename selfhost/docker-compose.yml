@@ -79,7 +79,7 @@ services:
   # ---------------------------------------------------------------------
   matrix-conduit:
     profiles: ["matrix"]
-    image: matrixconduit/matrix-conduit:latest
+    image: matrixconduit/matrix-conduit:latest@sha256:b0d24248e94f944ca49f90f10c429e3d65f4472bdde25661ecea9840134fb133
     container_name: hivemind-matrix-conduit
     restart: unless-stopped
     logging: *default-logging
@@ -93,7 +93,7 @@ services:
 
   mattermost-db:
     profiles: ["mattermost"]
-    image: postgres:18-alpine
+    image: postgres:18-alpine@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2
     container_name: hivemind-mattermost-db
     restart: unless-stopped
     logging: *default-logging
@@ -106,7 +106,7 @@ services:
 
   mattermost:
     profiles: ["mattermost"]
-    image: mattermost/mattermost-team-edition:latest
+    image: mattermost/mattermost-team-edition:latest@sha256:8285b96eb412d89dd308e4c1ad9cc7f1a9dc9edcd798167b55bc35f1c7ee69d1
     container_name: hivemind-mattermost
     restart: unless-stopped
     depends_on: [mattermost-db]
@@ -123,7 +123,7 @@ services:
 
   asterisk:
     profiles: ["baresip"]
-    image: andrius/asterisk
+    image: andrius/asterisk@sha256:5687ca08cbba55ddb88d6f2b73503154f1cd98174b96f6ef9f54a4b49211c7e3
     container_name: hivemind-asterisk
     restart: unless-stopped
     logging: *default-logging
