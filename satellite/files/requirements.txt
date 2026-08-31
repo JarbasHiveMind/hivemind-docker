@@ -10,6 +10,10 @@ ovos-PHAL-plugin-ipgeo
 ovos-stt-plugin-chromium
 ovos-tts-plugin-polly
 ovos-vad-plugin-webrtcvad
+# When the configured VAD plugin fails to load, OVOSVADFactory retries with this one.
+# Silero, for capable CPUs, comes from hivemind-voice-sat itself. Without this fallback
+# a VAD the image cannot load kills the satellite at startup instead of degrading.
+ovos-vad-plugin-noise
 # tflite-based wake-word plugins (openwakeword, precise-lite) cannot install on
 # Python 3.13 (no cp313 tflite-runtime wheel; openwakeword also pins numpy<2).
 # vosk works on every channel; precise-onnx is channel-dependent and installed
