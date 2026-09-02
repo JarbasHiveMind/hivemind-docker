@@ -16,7 +16,7 @@
 # elsewhere in this stack. Installed as-is (its own floor) rather than
 # forcing a newer client and breaking the build — needs an upstream floor
 # bump + relock before this bridge runs against the current client line.
-FROM python:3.13-slim@sha256:7ce4b6dfe35e55397b7cda544f8a13f191b7ae28dc5aad71fe664dbc9bc2623f
+FROM python:3.13-slim@sha256:9d2e5553305c7c7b0097999bb17187c69b921ccd6bc9d40e4bb5ebe652c00285
 
 ENV PIP_NO_CACHE_DIR=1
 RUN pip install --no-cache-dir --pre --upgrade "hivemind-matrix-bridge"
