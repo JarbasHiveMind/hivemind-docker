@@ -76,7 +76,7 @@ jobs:
       max-parallel: 1
       matrix:
         include: ${{ fromJSON(needs.select.outputs.matrix) }}
-    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@0fab352f13f2b029cf1f26e31e75a720ce95bc18 # v2.0.2
+    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@64976c5e9dab28b6692a259d16a0f95129622a0b # v2.1.0
     with:
       channel: ${{ matrix.channel }}
       targets: ${{ matrix.targets }}
