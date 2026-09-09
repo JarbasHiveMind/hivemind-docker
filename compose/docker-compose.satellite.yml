@@ -74,6 +74,9 @@ services:
       - /dev/snd
     volumes:
       - ~/.config/pulse/cookie:/home/${HIVEMIND_USER}/.config/pulse/cookie:ro
+      # Writable on purpose: this is where _identity.json lands, so an identity set
+      # from the hivemind_cli container reaches the satellite and survives restarts.
+      - ${HIVEMIND_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/hivemind:z
       - ${OVOS_CONFIG_FOLDER}:/home/${HIVEMIND_USER}/.config/mycroft:ro
       - ovos_tts_cache:/home/${HIVEMIND_USER}/.cache/mycroft
       - ovos_listener_records:/home/${HIVEMIND_USER}/.local/share/mycroft/listener
