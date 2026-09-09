@@ -161,8 +161,9 @@ def main() -> int:
         print("\nrun scripts/contract.py --write", file=sys.stderr)
         return 1
 
+    service_count = sum(len(v) for v in derived["services"].values())
     print(f"contract.yml matches compose/ ({len(derived['compose_files'])} files, "
-          f"{len(derived['services'])} services, {len(derived['env'])} variables)")
+          f"{service_count} services, {len(derived['env'])} variables)")
     return 0
 
 
