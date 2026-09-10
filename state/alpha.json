@@ -125,9 +125,9 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-09-10T10:53:12Z",
-   "constraints_ref": "6f863ecec1cbf4a3762120722f396496bb70ba64",
-   "digest": "sha256:827592645b132ada7520c7f8ccd89a855ecb62d03a4919b7608b64c7da501de4",
+   "built": "2026-09-10T20:37:35Z",
+   "constraints_ref": "6975d9aad9bd6cf67ecc0b2483c22a9f30900965",
+   "digest": "sha256:0e852cd902f166c4134009e5ae08680b04901295a06d883f3413d3033cb2ff38",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
@@ -227,9 +227,9 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-09-10T10:53:12Z",
-   "constraints_ref": "6f863ecec1cbf4a3762120722f396496bb70ba64",
-   "digest": "sha256:41e277a534be5dca275417005ad9a006d369a2c8b0fa135dc850175ed9c19a43",
+   "built": "2026-09-10T20:37:35Z",
+   "constraints_ref": "6975d9aad9bd6cf67ecc0b2483c22a9f30900965",
+   "digest": "sha256:3299c55b2369057878559cc2745995a0ad178123e5233ec2a0447dbef9d5135f",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
@@ -425,9 +425,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-09-10T10:53:12Z",
-   "constraints_ref": "6f863ecec1cbf4a3762120722f396496bb70ba64",
-   "digest": "sha256:686fa240f08de1caaaaf8dfbb1fc649e8b6a75d5d096a9bb6d63b0018304e6ea",
+   "built": "2026-09-10T20:37:35Z",
+   "constraints_ref": "6975d9aad9bd6cf67ecc0b2483c22a9f30900965",
+   "digest": "sha256:6e6eb95a69f6f0e56d3442c7d8f9026474f19bc59c528c69dc9587b9ba44fdff",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -645,6 +645,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "6f863ecec1cbf4a3762120722f396496bb70ba64",
- "updated": "2026-09-10T10:53:12Z"
+ "ovos_releases_ref": "6975d9aad9bd6cf67ecc0b2483c22a9f30900965",
+ "updated": "2026-09-10T20:37:35Z"
 }
