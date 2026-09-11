@@ -45,8 +45,10 @@ the wire protocol and specs live in the architecture docs.
   `VOICE_SAT_HOST`/`VOICE_SAT_PORT`), and the chatroom / webchat / matrix-bot
   bridges. `.env-example` documents every variable with placeholders.
 - CI lives in `.github/workflows/`: `pull-request.yml` dry-builds the images a
-  PR touches, `on-push.yml` publishes what a merge on `dev` changed for every
-  channel, `on-constraints.yml` (hourly) rebuilds images whose pinned packages
+  PR touches, `on-push.yml` publishes, for every channel, what changed
+  since the last commit that workflow actually published - not what the merge
+  itself changed, because a cancelled run's work would otherwise be skipped for
+  good rather than retried, `on-constraints.yml` (hourly) rebuilds images whose pinned packages
   moved in ovos-releases, `scheduled-rebuild.yml` rebuilds each channel weekly,
   and `record-state.yml` writes the `build-state` branch. They are thin callers
   of OpenVoiceOS/ovos-docker's reusable `build-images.yml` (pinned to a
@@ -105,10 +107,15 @@ the wire protocol and specs live in the architecture docs.
 
 ## Tests
 
-- There is no automated test suite in this repo. "Testing" a change means
-  building the image(s) touched and, for compose changes, actually running
-  `docker compose up` against a reachable hub and confirming the satellite
-  connects and stays connected.
+- The only automated tests are `scripts/test_contract.py`, which covers how the
+  contract scan reads a compose file, and `scripts/contract.py` itself, which
+  fails when `contract.yml` and `compose/` disagree. Both run on every PR and
+  both need nothing but PyYAML, so run them before pushing a change under
+  `compose/` or `scripts/`. No other automated tests exist. CI does dry-build
+  the images a PR touches, which proves they build and nothing beyond that, so
+  testing an image change still means running the image, and testing a compose
+  change means actually running `docker compose up` against a reachable hub and
+  confirming the satellite connects and stays connected.
 - Adversarial by default: if you fix a broken build or a broken entrypoint,
   reproduce the failure first (build/run before the fix, watch it fail) before
   claiming the fix works.
@@ -117,6 +124,17 @@ the wire protocol and specs live in the architecture docs.
 
 ## Repo-specific rules
 
+- **`compose/` is a published interface, and `contract.yml` is the declaration
+  of it.** ovos-installer clones this repository at a release tag and runs these
+  compose files, so the compose file names, the container names it execs into,
+  the environment variables the compose reads and the images it pulls are all
+  things another project depends on. Renaming or removing any of them breaks an
+  install far from the change that caused it. `scripts/contract.py --write`
+  regenerates the declaration after editing `compose/`, and CI fails when the
+  two disagree. Two fields are not derived and survive a rewrite: `description`,
+  and `owner: installer` on a variable the consumer must supply even though the
+  compose has a default for it - "has a fallback" and "nobody needs to set it"
+  are different claims, and only the second is safe to skip.
 - **Secrets never get committed.** `compose/.env-example` documents the shape
   of the required `.env` (`VOICE_SAT_KEY`, `VOICE_SAT_PASSWORD`,
   `VOICE_SAT_HOST`, `VOICE_SAT_PORT`, `OVOS_CONFIG_FOLDER`, `OVOS_USER`, `TZ`,
