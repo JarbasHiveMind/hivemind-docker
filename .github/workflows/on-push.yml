@@ -32,7 +32,20 @@ jobs:
         env:
           BEFORE: ${{ github.event.before }}
           HEAD: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          # Diff from the last commit this workflow actually published, not from this push's own
+          # parent. Only one run may sit pending in a concurrency group, so when several merges
+          # land minutes apart the middle ones are cancelled - and the next push's
+          # github.event.before is the cancelled push's head, so whatever that push would have
+          # rebuilt is skipped for good rather than retried. hivemind base/Dockerfile changed on
+          # 2026-09-09 and was still unpublished two days later because of exactly that.
+          last=$(gh run list --workflow on-push.yml --branch "$GITHUB_REF_NAME" \
+                   --status success --limit 1 --json headSha -q '.[0].headSha' 2>/dev/null || true)
+          if [ -n "$last" ] && git cat-file -e "$last" 2> /dev/null; then
+            echo "diffing from the last successful publish: $last"
+            BEFORE="$last"
+          fi
           if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$BEFORE" 2> /dev/null; then
             echo "no usable base commit -> building everything"
             files="docker-bake.hcl"
