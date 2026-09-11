@@ -51,8 +51,12 @@ the wire protocol and specs live in the architecture docs.
   and `record-state.yml` writes the `build-state` branch. They are thin callers
   of OpenVoiceOS/ovos-docker's reusable `build-images.yml` (pinned to a
   release tag) with the vendored `scripts/affected.py`, `scripts/ci/smoke.sh`
-  and `scripts/ci/record-state.py`. Deeper validation still means building the
-  affected image locally via `scripts/bake.sh`.
+  and `scripts/ci/record-state.py`. `pull-request.yml` also runs
+  `scripts/contract.py` (the declaration in `contract.yml` against `compose/`)
+  and `scripts/test_contract.py` (fixtures for how that scan reads a compose
+  file); run both with `python3` and nothing but PyYAML installed. Deeper
+  validation still means building the affected image locally via
+  `scripts/bake.sh`.
 - Each Dockerfile takes `ARG TAG=alpha` (which base-image tag to build from),
   `ARG CHANNEL` + `ARG OVOS_RELEASES_REF` (which
   `constraints-<channel>.txt` from OpenVoiceOS/ovos-releases pins the
