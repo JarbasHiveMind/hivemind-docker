@@ -125,9 +125,9 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-09-18T10:51:13Z",
-   "constraints_ref": "bd0d3544663ccc2954b385dfe04deb3ee02794ae",
-   "digest": "sha256:4a1e2462477bbd3500439f74d590801d351fe73c0cb165d74701591db4d65e42",
+   "built": "2026-09-18T16:04:37Z",
+   "constraints_ref": "492ccf2d5a4225debab061e67fe6dc12cdf88f76",
+   "digest": "sha256:766d60b115aee4beb58143e90aec61b35b5b76f5d1a090c65def5d3d8dc7534b",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
@@ -227,9 +227,9 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-09-18T10:51:13Z",
-   "constraints_ref": "bd0d3544663ccc2954b385dfe04deb3ee02794ae",
-   "digest": "sha256:09255a4f11e1f3cdf8ec835db690515a043abc51302084d70d6c057d29fc451f",
+   "built": "2026-09-18T16:04:37Z",
+   "constraints_ref": "492ccf2d5a4225debab061e67fe6dc12cdf88f76",
+   "digest": "sha256:a41d6ae86a183e0880a3c1b3b4f3a82bb98f8e312ed0a2bcb10a21a55dc4dadb",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
@@ -425,9 +425,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-09-18T10:51:13Z",
-   "constraints_ref": "bd0d3544663ccc2954b385dfe04deb3ee02794ae",
-   "digest": "sha256:b64a6c575dfb367866da381ba833d0a06edf5d8a79535f40f6cf3712cfd575c6",
+   "built": "2026-09-18T16:04:37Z",
+   "constraints_ref": "492ccf2d5a4225debab061e67fe6dc12cdf88f76",
+   "digest": "sha256:ce7230969c7355e303a3b762b296d886c4f1e7945951a5a5f86e7fb14f0489ff",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -685,6 +685,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "bd0d3544663ccc2954b385dfe04deb3ee02794ae",
- "updated": "2026-09-18T10:51:13Z"
+ "ovos_releases_ref": "492ccf2d5a4225debab061e67fe6dc12cdf88f76",
+ "updated": "2026-09-18T16:04:37Z"
 }
