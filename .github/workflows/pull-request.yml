@@ -33,6 +33,8 @@ jobs:
       - run: python3 scripts/contract.py
       # the gate is only worth having if it reads the compose files the way compose does
       - run: python3 scripts/test_contract.py
+      # the satellite entrypoint must pick the identity the way hivemind-voice-sat does
+      - run: python3 scripts/test_satellite_entrypoint.py
 
   select:
     name: Affected targets
