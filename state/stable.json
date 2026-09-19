@@ -378,9 +378,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-09-18T05:53:01Z",
-   "constraints_ref": "0a4bbf521e3275703bd91d1bbc2d10a7702433d0",
-   "digest": "sha256:4c122b345fe49f4ecce95d3c2d2b1f8769a8b980afbf45cd8066263a3a9bce0b",
+   "built": "2026-09-19T02:43:08Z",
+   "constraints_ref": "6fde6049478c8f523e511d3193a06f16a41ba682",
+   "digest": "sha256:64316e0a17cdf3b807269b7dfeb0665c303088b019c62e15665804fb7ed7a6d1",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -453,6 +453,7 @@
     "ovos-vad-plugin-noise",
     "ovos-vad-plugin-silero",
     "ovos-vad-plugin-webrtcvad",
+    "ovos-ww-plugin-precise-onnx",
     "ovos-ww-plugin-vosk",
     "packaging",
     "pexpect",
@@ -485,6 +486,7 @@
     "scipy",
     "setuptools",
     "six",
+    "sonopy",
     "sounddevice",
     "speechrecognition",
     "srt",
@@ -629,6 +631,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "0a4bbf521e3275703bd91d1bbc2d10a7702433d0",
- "updated": "2026-09-18T05:53:01Z"
+ "ovos_releases_ref": "6fde6049478c8f523e511d3193a06f16a41ba682",
+ "updated": "2026-09-19T02:43:08Z"
 }

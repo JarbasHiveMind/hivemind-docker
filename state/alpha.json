@@ -425,9 +425,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-09-18T20:40:44Z",
+   "built": "2026-09-19T02:43:07Z",
    "constraints_ref": "6fde6049478c8f523e511d3193a06f16a41ba682",
-   "digest": "sha256:8164923e66580e62c21a62a2cd8c53588f6c0e291d36f31f0a9d8b19f15620b4",
+   "digest": "sha256:20b0a988a5e12358785d25277050a7711d4f62747dafec133dc1b105a4eb9f73",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -486,7 +486,6 @@
     "ovos-classifiers",
     "ovos-config",
     "ovos-dinkum-listener",
-    "ovos-microphone-plugin-alsa",
     "ovos-microphone-plugin-sounddevice",
     "ovos-phal",
     "ovos-phal-plugin-alsa",
@@ -686,5 +685,5 @@
   }
  },
  "ovos_releases_ref": "6fde6049478c8f523e511d3193a06f16a41ba682",
- "updated": "2026-09-18T20:40:44Z"
+ "updated": "2026-09-19T02:43:07Z"
 }
