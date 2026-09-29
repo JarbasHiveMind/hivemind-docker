@@ -28,7 +28,7 @@ LABEL org.opencontainers.image.title="HiveMind OCI Chatroom" \
       io.openvoiceos.constraints.ref="${OVOS_RELEASES_REF}"
 
 ARG CHANNEL=alpha
-ARG UV_PRERELEASE=never
+ARG UV_PRERELEASE=disallow
 ARG USER=hivemind
 
 # The channel's resolved, mutually-consistent version set from OpenVoiceOS/ovos-releases. ADD

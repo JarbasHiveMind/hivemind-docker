@@ -128,7 +128,7 @@ Defaults are defined in `docker-bake.hcl` and `scripts/bake.sh`:
 - `CHANNEL` (default `alpha`): which `constraints-<channel>.txt` pins the installs
 - `OVOS_RELEASES_REF` (default `main`): git ref of ovos-releases to take the constraints from
 - `PLATFORMS` (default `linux/amd64,linux/arm64`)
-- `UV_PRERELEASE` (default `allow`): uv prerelease policy (`never` outside alpha)
+- `UV_PRERELEASE` (default `allow`): uv prerelease policy (`disallow` outside alpha)
 - `MIRROR_REGISTRY` (default empty; CI uses `ghcr.io/jarbashivemind/hivemind-docker`)
 - `CACHE_REPO`/`CACHE_TO`: GHCR build cache (`hivemind-docker-cache`); leave `CACHE_TO` empty locally
 - `ENSURE_BINFMT` (default `auto`, set `true` to force or `false` to skip)
