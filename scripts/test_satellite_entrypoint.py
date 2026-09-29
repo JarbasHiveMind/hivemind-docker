@@ -106,6 +106,52 @@ class SatelliteEntrypointTests(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("STUB argv: --key k --password p --host ws://hub --port 5678 --siteid site", out)
 
+    def test_an_unset_port_is_not_passed_as_an_empty_argument(self):
+        code, out = self.run_entrypoint(None, {"VOICE_SAT_KEY": "k", "VOICE_SAT_PASSWORD": "p",
+                                               "VOICE_SAT_HOST": "ws://hub",
+                                               "HIVEMIND_SITEID": "site"})
+        self.assertEqual(code, 0, out)
+        self.assertIn("STUB argv: --key k --password p --host ws://hub --siteid site", out)
+        self.assertNotIn("--port", out)
+
+    def test_an_unset_siteid_is_not_passed_as_an_empty_argument(self):
+        code, out = self.run_entrypoint(None, {"VOICE_SAT_KEY": "k", "VOICE_SAT_PASSWORD": "p",
+                                               "VOICE_SAT_HOST": "ws://hub",
+                                               "VOICE_SAT_PORT": "5678"})
+        self.assertEqual(code, 0, out)
+        self.assertIn("STUB argv: --key k --password p --host ws://hub --port 5678", out)
+        self.assertNotIn("--siteid", out)
+
+    def test_neither_optional_argument_leaves_only_the_credentials(self):
+        code, out = self.run_entrypoint(None, {"VOICE_SAT_KEY": "k", "VOICE_SAT_PASSWORD": "p",
+                                               "VOICE_SAT_HOST": "ws://hub"})
+        self.assertEqual(code, 0, out)
+        self.assertIn("STUB argv: --key k --password p --host ws://hub\n", out)
+
+
+class DockerfilePrereleaseTests(unittest.TestCase):
+    """uv rejects --prerelease=never, so it cannot be an ARG default.
+
+    The values uv accepts are disallow, allow, if-necessary, explicit and
+    if-necessary-or-explicit. A bare "docker build" of any of these images
+    takes the ARG default, and with "never" the uv step fails.
+    """
+
+    UV_VALUES = {"disallow", "allow", "if-necessary", "explicit",
+                 "if-necessary-or-explicit"}
+
+    def test_every_dockerfile_default_is_a_value_uv_accepts(self):
+        root = Path(__file__).resolve().parent.parent
+        defaults = {}
+        for dockerfile in sorted(root.glob("*/Dockerfile")):
+            for line in dockerfile.read_text().splitlines():
+                if line.startswith("ARG UV_PRERELEASE="):
+                    defaults[dockerfile.relative_to(root).as_posix()] = line.split("=", 1)[1]
+        self.assertTrue(defaults, "no Dockerfile declares ARG UV_PRERELEASE")
+        bad = {path: value for path, value in defaults.items()
+               if value not in self.UV_VALUES}
+        self.assertEqual(bad, {}, f"values uv rejects: {bad}")
+
 
 if __name__ == "__main__":
     sys.exit(0 if unittest.main(exit=False).result.wasSuccessful() else 1)

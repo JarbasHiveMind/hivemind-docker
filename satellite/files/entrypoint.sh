@@ -98,4 +98,18 @@ if [ -n "$missing" ]; then
     exit 1
 fi
 
-exec hivemind-voice-sat --key "$VOICE_SAT_KEY" --password "$VOICE_SAT_PASSWORD" --host "$VOICE_SAT_HOST" --port "$VOICE_SAT_PORT" --siteid "$HIVEMIND_SITEID"
+# hivemind-voice-sat reads --port as an integer, so an empty VOICE_SAT_PORT is
+# not "use the default": click refuses "" and the container exits 2 with a
+# message about an integer. compose gives HIVEMIND_SITEID a default but not
+# VOICE_SAT_PORT, so a .env file without that line reaches this line empty.
+# Pass each optional argument only when it has a value and let the satellite
+# apply its own default: the identity's port, then 5678.
+optional=()
+if [ -n "$VOICE_SAT_PORT" ]; then
+    optional+=(--port "$VOICE_SAT_PORT")
+fi
+if [ -n "$HIVEMIND_SITEID" ]; then
+    optional+=(--siteid "$HIVEMIND_SITEID")
+fi
+
+exec hivemind-voice-sat --key "$VOICE_SAT_KEY" --password "$VOICE_SAT_PASSWORD" --host "$VOICE_SAT_HOST" "${optional[@]}"
