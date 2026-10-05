@@ -79,7 +79,7 @@ services:
   # ---------------------------------------------------------------------
   matrix-conduit:
     profiles: ["matrix"]
-    image: matrixconduit/matrix-conduit:latest@sha256:b0d24248e94f944ca49f90f10c429e3d65f4472bdde25661ecea9840134fb133
+    image: matrixconduit/matrix-conduit:latest@sha256:cb4deab33ea1a6da919a0ea99e76be75d6af5936623fd9dde442a17e2d0b320f
     container_name: hivemind-matrix-conduit
     restart: unless-stopped
     logging: *default-logging
