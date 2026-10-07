@@ -3,7 +3,7 @@
 # not just an echo. Grounded in the OVOS agent_protocol wiring verified on
 # ser9's hub (hivemind-core + hivemind-ovos-agent-plugin talking to a local
 # ovos-messagebus).
-FROM python:3.13-slim@sha256:3dd7cc108ec1493442514f5c2a871af6af0ec31d768ff6e378a93340c3b3db5f
+FROM python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
 
 ENV DEBIAN_FRONTEND=noninteractive \
     PIP_NO_CACHE_DIR=1

@@ -4,7 +4,7 @@
 # to be committed to JarbasHiveMind/HiveMind-twitch-bridge itself (build
 # context = repo root); the selfhost stack builds this bridge straight
 # from that repo's git URL rather than duplicating a copy here.
-FROM python:3.13-slim@sha256:3dd7cc108ec1493442514f5c2a871af6af0ec31d768ff6e378a93340c3b3db5f
+FROM python:3.13-slim@sha256:bf44cdfcb76cd3b41e879bc058fc37ec5872002ccfde7fcb765e218cde0cd79c
 
 WORKDIR /app
 COPY . /app
