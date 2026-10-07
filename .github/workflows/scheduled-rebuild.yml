@@ -44,7 +44,7 @@ jobs:
   rebuild:
     name: ${{ needs.pick.outputs.channel }}
     needs: pick
-    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@64976c5e9dab28b6692a259d16a0f95129622a0b # v2.1.0
+    uses: OpenVoiceOS/ovos-docker/.github/workflows/build-images.yml@f2d18e0f7768248c47bc78aa65f81730e0ca0eb8 # v2.2.0
     with:
       channel: ${{ needs.pick.outputs.channel }}
       targets: default
