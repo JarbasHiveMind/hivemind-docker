@@ -35,6 +35,8 @@ jobs:
       - run: python3 scripts/test_contract.py
       # the satellite entrypoint must pick the identity the way hivemind-voice-sat does
       - run: python3 scripts/test_satellite_entrypoint.py
+      # the self-host hub must grant a bridge each utterance topic it can send
+      - run: python3 scripts/test_hub_init.py
 
   select:
     name: Affected targets
