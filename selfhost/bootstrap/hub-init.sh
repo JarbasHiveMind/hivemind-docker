@@ -13,8 +13,11 @@ set -euo pipefail
 CREDS_DIR="${CREDS_DIR:-/creds}"
 mkdir -p "$CREDS_DIR"
 
-# message types every conversational bridge needs
-BASE_MSGS=(recognizer_loop:utterance speak)
+# message types every conversational bridge may send. The hub admits a message
+# by exact topic, so an utterance is granted under its current name and its
+# legacy one: a client sends whichever its release emits. A client receives
+# `speak` without a grant, so it is not listed.
+BASE_MSGS=(ovos.utterance.handle recognizer_loop:utterance)
 # extra message types the media-player hub needs (OCP playback control)
 PLAYER_MSGS=(
   ovos.common_play.play

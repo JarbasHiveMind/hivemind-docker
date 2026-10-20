@@ -48,8 +48,9 @@ yourself (Telegram, Twitch).
 2. For every bridge named in `HIVEMIND_BRIDGES` (set in
    `docker-compose.yml`), it runs `hivemind-core add-client`, parses the
    generated access key / password from the CLI output, and calls
-   `hivemind-core allow-msg` to whitelist `recognizer_loop:utterance` and
-   `speak` (plus the `ovos.common_play.*` types for the media-player hub).
+   `hivemind-core allow-msg` to whitelist `ovos.utterance.handle` and
+   `recognizer_loop:utterance` (plus the `ovos.common_play.*` types for the
+   media-player hub). A bridge receives `speak` replies without a grant.
 3. The result is written to `/creds/<bridge>.env` inside the shared
    `hivemind-creds` Docker volume.
 4. Each bridge container's entrypoint (`bootstrap/wait-for-creds.sh`) polls
