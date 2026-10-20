@@ -124,9 +124,9 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-10-20T16:35:24Z",
-   "constraints_ref": "49f79bc04884cbb84b6e586fd2726181f3de6f4a",
-   "digest": "sha256:1d384e679311dc81bdfa65dc1eb6c542922006da20761da5a7d219823ed7f1e6",
+   "built": "2026-10-20T21:28:11Z",
+   "constraints_ref": "144a05a75c37ae9e7727170536460b779bceddf6",
+   "digest": "sha256:ebe7ca4cdd5bd4de3d959496919b16456054022d0349394c4ef1af902bb43bb1",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
@@ -225,9 +225,9 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-10-20T16:35:24Z",
-   "constraints_ref": "49f79bc04884cbb84b6e586fd2726181f3de6f4a",
-   "digest": "sha256:142b385a364b0a19d13c24a93fee5d18aaf4d7c6595cfc0fd035bd990364f53f",
+   "built": "2026-10-20T21:28:11Z",
+   "constraints_ref": "144a05a75c37ae9e7727170536460b779bceddf6",
+   "digest": "sha256:de97742490093211f19a35c7ef639b6cce7da277da800ed938424ed00fd82e8b",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
@@ -421,9 +421,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-10-20T16:35:24Z",
-   "constraints_ref": "49f79bc04884cbb84b6e586fd2726181f3de6f4a",
-   "digest": "sha256:9d5e4dfdfd8e82034f280c6224bc1d50e8840f4f980a774085941893f84d70a9",
+   "built": "2026-10-20T21:28:11Z",
+   "constraints_ref": "144a05a75c37ae9e7727170536460b779bceddf6",
+   "digest": "sha256:cabeb6eb1d66d27b0887b93aa3ced2ac6eb14df3c96a7bcf3518cdb130d26967",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -678,6 +678,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "49f79bc04884cbb84b6e586fd2726181f3de6f4a",
- "updated": "2026-10-20T16:35:24Z"
+ "ovos_releases_ref": "144a05a75c37ae9e7727170536460b779bceddf6",
+ "updated": "2026-10-20T21:28:11Z"
 }
