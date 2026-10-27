@@ -40,14 +40,15 @@
    "repo": "docker.io/smartgic/hivemind-base"
   },
   "chatroom": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:1e00a6ecf38ffc9f218680f44b3aa8dd3cadfb7ba511000fe597c64226f2c54d",
+   "digest": "sha256:083f16f656cb962e3b75e138e2f71a548ece91d0a225e3b660e0dc9efb8332d5",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-chatroom",
    "packages": [
     "CacheControl",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "blinker",
     "certifi",
@@ -118,14 +119,15 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:571077837b293d754401d5214f34210f6670de751991253e744630329931a761",
+   "digest": "sha256:cf6283c8489c87e21484a736e222b8521c6a7023a9e5c9f174f20eeaa665bb4d",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -202,15 +204,16 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:f1329e75e94b916057772058fa7a8d5a2658ff29ab12f5ffa746ac813afcd76e",
+   "digest": "sha256:f18f37efc92d14a32bc4aa472c84bef4c748ce28aa6711fbfce2e607665a588a",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -293,14 +296,15 @@
    "repo": "docker.io/smartgic/hivemind-listener"
   },
   "matrix-bot": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:cd5f649afa18c57e41ccdc288d21d350e5915ced2c70ddd647b1ea399d453a4d",
+   "digest": "sha256:5ee138e775b9634021d1847d0433e9ef694383c6360b4e13d8050833b7600b10",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-matrix-bot",
    "packages": [
     "CacheControl",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -374,9 +378,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:7dcf3d290bc4ff28cf8d612192b0b59bedc6098850b6f3d44055991798f949d4",
+   "digest": "sha256:622a7ccec40b864d74f04e30508d68d9f94b4549044b1214e851b128bd2e78b0",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -384,6 +388,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "boto3",
     "botocore",
@@ -546,9 +551,9 @@
    "repo": "docker.io/smartgic/hivemind-sound-base"
   },
   "webchat": {
-   "built": "2026-10-27T13:10:24Z",
+   "built": "2026-10-27T16:05:30Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:9404be0b71a1b7f47177002334a76209a9d0654d01e1e9c308f0d61e4e1103cb",
+   "digest": "sha256:0ea533bd6c9bb43fb1b0f7f287e6ef338ecd243c2ab89b7641adef8de9cd721b",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-webchat",
    "packages": [
     "CacheControl",
@@ -556,6 +561,7 @@
     "argon2-cffi-bindings",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -624,5 +630,5 @@
   }
  },
  "ovos_releases_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
- "updated": "2026-10-27T13:10:24Z"
+ "updated": "2026-10-27T16:05:30Z"
 }

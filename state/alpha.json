@@ -40,9 +40,9 @@
    "repo": "docker.io/smartgic/hivemind-base"
   },
   "chatroom": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:9ad7fbda4375555c0a0203da5c4464609e38e80d2242bc75afe397f34b1183f0",
+   "digest": "sha256:5c2e42104b2587f58ede9002f164be91f470a546443b5b9bddac1c22dd31cf28",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-chatroom",
    "packages": [
     "CacheControl",
@@ -50,6 +50,7 @@
     "argon2-cffi-bindings",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "blinker",
     "certifi",
@@ -124,9 +125,9 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:d387ec19354a8e2258a7096d121bbcdad79141e7f22728a528ce237d23643312",
+   "digest": "sha256:7b8bc3950249b7a89f4c496748a7ae0c525a388d7e427789a4a33333e388ac3d",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
@@ -136,6 +137,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -225,9 +227,9 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:5eedb2a6ac55c6c606f6a3a4fce389abd760873c5e74d5667fd946fa77655782",
+   "digest": "sha256:faf9f8700c85aef3b9d364a120fff4fc801fb7c5cd42fd177f576216e40eab3e",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
@@ -237,6 +239,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -328,9 +331,9 @@
    "repo": "docker.io/smartgic/hivemind-listener"
   },
   "matrix-bot": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:be166fabd6ad14c99629376ce80e846521b667a3cce73c11428c0300bb4e83be",
+   "digest": "sha256:b95282334acac85c46db1422b146d0240817954e297fdb444892e800fb5f5a37",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-matrix-bot",
    "packages": [
     "CacheControl",
@@ -340,6 +343,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -421,9 +425,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:6c55ccf5194f20a3b20faafa0cd2320c4979e67f8f511e636a07d7553f5f6129",
+   "digest": "sha256:88a14d8b2fe06f3267443931fc09cd8efe3dccbf4b84295a1ca4c9cab5fe8c39",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -434,6 +438,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "boto3",
     "botocore",
@@ -599,9 +604,9 @@
    "repo": "docker.io/smartgic/hivemind-sound-base"
   },
   "webchat": {
-   "built": "2026-10-27T08:36:15Z",
+   "built": "2026-10-27T16:05:19Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:a4b45f18c81abd0fb3e1376301700dbc3e88f4af7f5a5ba53b341d985a246583",
+   "digest": "sha256:83498f09dfeeab1c99e6c4e5d26d2c18f61e1fb0cd8821b40c0754e4615e4a70",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-webchat",
    "packages": [
     "CacheControl",
@@ -609,6 +614,7 @@
     "argon2-cffi-bindings",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -679,5 +685,5 @@
   }
  },
  "ovos_releases_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
- "updated": "2026-10-27T08:36:15Z"
+ "updated": "2026-10-27T16:05:19Z"
 }

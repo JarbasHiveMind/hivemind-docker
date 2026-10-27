@@ -40,14 +40,15 @@
    "repo": "docker.io/smartgic/hivemind-base"
   },
   "chatroom": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:032dc0034f81402da0640314ba216bf6b05ad147098a5a1fdf26a598b19e5395",
+   "digest": "sha256:28068e44ccf2f6b0268439a9d313ccecf44c79bcdbab06dd99bb34bc31da8988",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-chatroom",
    "packages": [
     "CacheControl",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "blinker",
     "certifi",
@@ -118,14 +119,15 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:7343c15cb750d60781e038d96805ca019b2e2b412e3ef6cd5ea38a9fbcfdfe46",
+   "digest": "sha256:189be04289d1488cc4614b3644b4453a1097443d5f740b1e314035523259e282",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -202,15 +204,16 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:e4ba85d5bcbe953ca3863920fc7f4ee26f2a8d706af794a9659a41021d9bf44f",
+   "digest": "sha256:0cd584871ece0bc4d9dc59f14df1b1649ca84e7ac3d8abaa63b299d9addd35f5",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -293,15 +296,16 @@
    "repo": "docker.io/smartgic/hivemind-listener"
   },
   "matrix-bot": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:e4e1dda8b57e926bf08e719a9cf2f378461d7cc0c942ac4edcbc140879dff6b0",
+   "digest": "sha256:e4c05739c31b62f8e1b667ff6930aa9ed074c5e7c73f5afd47a55db49ed9342e",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-matrix-bot",
    "packages": [
     "CacheControl",
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -377,9 +381,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:565fe0cd4bc17ec4d122a44a96f7d846d7ec12121325cd4a7539cb545e7fef37",
+   "digest": "sha256:02de302dd130720305f2eadd49680de6878645c412f51b1d2bd344e5f576b8d2",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -387,6 +391,7 @@
     "audioop-lts",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "boto3",
     "botocore",
@@ -551,9 +556,9 @@
    "repo": "docker.io/smartgic/hivemind-sound-base"
   },
   "webchat": {
-   "built": "2026-10-27T10:31:20Z",
+   "built": "2026-10-27T16:05:41Z",
    "constraints_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
-   "digest": "sha256:e4e13c8929ec88c4197684ca698a393f866b5c04f99b9289c0fef39310a1b6e4",
+   "digest": "sha256:2cd1f87588fb720831a2b5da51dd2b3204d79377ad6bc0ef5337067b23b0c29a",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-webchat",
    "packages": [
     "CacheControl",
@@ -561,6 +566,7 @@
     "argon2-cffi-bindings",
     "autocommand",
     "backports-tarfile",
+    "bitarray",
     "bitstring",
     "certifi",
     "cffi",
@@ -629,5 +635,5 @@
   }
  },
  "ovos_releases_ref": "6a29b0ead65dacb96ce2b133d7ce5b19f5d41779",
- "updated": "2026-10-27T10:31:20Z"
+ "updated": "2026-10-27T16:05:41Z"
 }
