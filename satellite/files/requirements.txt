@@ -21,4 +21,4 @@ ovos-vad-plugin-noise
 ovos-ww-plugin-vosk
 
 # hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
-bitstring<5
+bitstring<6
