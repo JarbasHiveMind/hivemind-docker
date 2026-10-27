@@ -11,6 +11,15 @@ fi
 python -V
 pip check
 
+# Metadata can be consistent while imports fail (bitstring 5 removed BitStream).
+python - <<'PYTHON'
+from importlib.util import find_spec
+
+if find_spec("hivemind_bus_client") is not None:
+    from hivemind_bus_client import serialization
+    print("HiveMind serialization: import ok")
+PYTHON
+
 if [ -f /usr/local/bin/entrypoint.sh ]; then
   bash -n /usr/local/bin/entrypoint.sh
   echo "entrypoint.sh: syntax ok"

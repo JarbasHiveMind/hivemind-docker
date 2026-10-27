@@ -101,6 +101,11 @@ the wire protocol and specs live in the architecture docs.
   bare package names (what the image contains); add a floor or pin there only
   when a specific released version is genuinely broken, with a one-line
   comment saying which and why (see matrix-bot).
+- Image requirements cap `bitstring<5` because the stable HiveMind client
+  0.4.4 imports the removed `BitStream` API. Remove this compatibility cap
+  only once every channel uses a client with bitstring 5 support. The runtime
+  smoke test imports HiveMind serialization to catch API incompatibilities
+  that dependency metadata checks cannot detect.
 - **No lockfiles.** Prerelease policy is the `UV_PRERELEASE` build arg
   (`allow` on alpha); prefer `uv` over bare `pip` in any RUN step you touch.
 - Apache-2.0. Do not add GPL/AGPL dependencies.

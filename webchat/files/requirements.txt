@@ -2,3 +2,6 @@
 # entrypoint calls hivemind-webchat, introduced in 0.3.1a0 — so the floor sits at
 # the rename and every channel installs the working alpha until a newer stable lands.
 hivemind-webchat>=0.3.1a0
+
+# hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
+bitstring<5
