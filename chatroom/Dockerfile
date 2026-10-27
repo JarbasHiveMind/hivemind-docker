@@ -41,8 +41,9 @@ USER root
 
 SHELL ["/bin/bash", "-c"]
 
+# hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
 RUN --mount=type=cache,target=/root/.cache/uv,sharing=locked \
-    uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt "hivemind-flask-chatroom>=0.1.0" \
+    uv pip install --prerelease="${UV_PRERELEASE}" -c /tmp/constraints.txt "hivemind-flask-chatroom>=0.1.0" "bitstring<5" \
  && rm -rf /tmp/* /var/tmp/*
 
 USER "$USER"

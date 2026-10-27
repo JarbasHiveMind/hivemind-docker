@@ -7,3 +7,6 @@ hivemind-websocket-protocol
 hivemind-http-protocol
 hivemind-audio-binary-protocol
 hivemind-redis-database
+
+# hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
+bitstring<5

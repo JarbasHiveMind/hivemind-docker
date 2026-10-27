@@ -19,3 +19,6 @@ ovos-vad-plugin-noise
 # vosk works on every channel; precise-onnx is channel-dependent and installed
 # by the Dockerfile where the channel's constraints allow it.
 ovos-ww-plugin-vosk
+
+# hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
+bitstring<5
