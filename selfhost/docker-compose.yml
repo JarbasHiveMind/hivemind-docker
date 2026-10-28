@@ -123,7 +123,7 @@ services:
 
   asterisk:
     profiles: ["baresip"]
-    image: andrius/asterisk@sha256:fa1d49e3826d3e85232e9a63bb1659a20088dabe8e41980ecc7948fb1da6efe6
+    image: andrius/asterisk@sha256:33f393eaa12001e5dcb1c8668d7fde6af13a2713e20901703346eeafcbf3c9d4
     container_name: hivemind-asterisk
     restart: unless-stopped
     logging: *default-logging
