@@ -425,9 +425,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-10-29T04:47:02Z",
-   "constraints_ref": "f4a66f60232cf396274aee0fe0cf1757375da286",
-   "digest": "sha256:3148e36ccfeba766fb2e04bd8caf4aec4e2faf94d77c9c1de52301ce8910597e",
+   "built": "2026-10-30T23:20:05Z",
+   "constraints_ref": "50ff6604b174fbe74aa0e1f7cb903a1d26c80a3b",
+   "digest": "sha256:683780b644c15b86aee511d36c560478417d39ec393ece15985312cf95371710",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -684,6 +684,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "f4a66f60232cf396274aee0fe0cf1757375da286",
- "updated": "2026-10-29T04:47:02Z"
+ "ovos_releases_ref": "50ff6604b174fbe74aa0e1f7cb903a1d26c80a3b",
+ "updated": "2026-10-30T23:20:05Z"
 }
