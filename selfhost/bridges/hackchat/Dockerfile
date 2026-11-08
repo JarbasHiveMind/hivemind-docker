@@ -10,7 +10,7 @@
 # upstream floor bump + relock in the bridge repo itself before the whole
 # stack can run one consistent hivemind-bus-client version. Tracked as a
 # TODO, not silently worked around.
-FROM python:3.13-slim@sha256:70729b46c69b4f1e97c4822c1af3df53a1476cf5ddc6c087c0c10bc3a5678c2f
+FROM python:3.13-slim@sha256:e48f59cdba69a3cbd9ed2cf0f348d90d45a8d350d98134cf1070bc106ee9ed90
 
 ENV PIP_NO_CACHE_DIR=1
 RUN pip install --no-cache-dir --pre --upgrade \
