@@ -106,7 +106,7 @@ services:
 
   mattermost:
     profiles: ["mattermost"]
-    image: mattermost/mattermost-team-edition:latest@sha256:6ad5912b45875ef2fafc41886b5a70a3ec1b6c17ec706e0492566e8a2fd8aa85
+    image: mattermost/mattermost-team-edition:latest@sha256:35927b9c535a9eb74f0e45385d3fe5d8308b16e0464031f157a834da8af3ee73
     container_name: hivemind-mattermost
     restart: unless-stopped
     depends_on: [mattermost-db]
