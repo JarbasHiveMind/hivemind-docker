@@ -40,9 +40,9 @@
    "repo": "docker.io/smartgic/hivemind-base"
   },
   "chatroom": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:c433581933d8394656c15871af6731c0ce852eb4316566cbac00734e599c58cc",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:6b8cc5a4bbe71641765708d28409fbaf29148ed0792b794b8e9f4158b6662241",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-chatroom",
    "packages": [
     "CacheControl",
@@ -126,9 +126,9 @@
    "repo": "docker.io/smartgic/hivemind-chatroom"
   },
   "cli": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:b324f79bae41c5f0b79d57214ffd37a7148d7681dc73c440dbb397ad9fcfa623",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:3e4e5d02a3cab44b9979ee695e94e40c19a49c33a97028519a11094ce809d46e",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-cli",
    "packages": [
     "CacheControl",
@@ -229,9 +229,9 @@
    "repo": "docker.io/smartgic/hivemind-cli"
   },
   "listener": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:017bc454b560f99b1532f655d48199b5e7ed8cba8d6a90f02e2ad253ccd3941f",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:ec20b9bb7fd821a329e8054692b2f2750c8335021ac45991c0b2991f5039dd27",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-listener",
    "packages": [
     "CacheControl",
@@ -334,9 +334,9 @@
    "repo": "docker.io/smartgic/hivemind-listener"
   },
   "matrix-bot": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:bd51d8819db08c20527458c4d412909b710dbf3213df1eb778197791003989cb",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:ae63bb39be43900c2315a287aed5c97c7ae6801f7ed2f8c69d89ad858f694571",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-matrix-bot",
    "packages": [
     "CacheControl",
@@ -429,9 +429,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:f1dbe044fadd74221040ba65ef6c55d5d3a2d361720cd6f77c26fc98942faca9",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:7a1aa1d309e9032b2b2a3c1875f05bfa061b74715901fac0ddf94b259ed626e8",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -610,9 +610,9 @@
    "repo": "docker.io/smartgic/hivemind-sound-base"
   },
   "webchat": {
-   "built": "2026-11-17T11:27:23Z",
-   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
-   "digest": "sha256:c3d8d83d1223bfd0e5d78172b1270903239b31edd5f5798a849ed2087371869c",
+   "built": "2026-11-17T15:46:21Z",
+   "constraints_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+   "digest": "sha256:8097469bff7f64aa588d8566fd0b61adabdf22895f70eeb30f5e6ad44e74b71c",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-webchat",
    "packages": [
     "CacheControl",
@@ -691,6 +691,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
- "updated": "2026-11-17T11:27:23Z"
+ "ovos_releases_ref": "0d6a3fa545a4ef71bb03b33e37899fca5c1cc56f",
+ "updated": "2026-11-17T15:46:21Z"
 }
