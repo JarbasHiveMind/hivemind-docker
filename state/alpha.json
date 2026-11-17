@@ -429,9 +429,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-11-13T17:31:51Z",
-   "constraints_ref": "7d1f1c84fb15c34d846d7915a7a6a615f75b6b99",
-   "digest": "sha256:439be7fddbc7b9d643c457e9dae215ff30a173cf653d4cbe0df0a691ab2ff812",
+   "built": "2026-11-17T01:44:50Z",
+   "constraints_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
+   "digest": "sha256:d35d6496e07eb69d019014a259fa522299cdad06fcb755c1d24b7e1f02de1022",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -483,6 +483,7 @@
     "nltk",
     "noiseprotocol",
     "numpy",
+    "numtag",
     "onnxruntime",
     "ovos-audio",
     "ovos-audio-plugin-mpv",
@@ -690,6 +691,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "7d1f1c84fb15c34d846d7915a7a6a615f75b6b99",
- "updated": "2026-11-13T17:31:51Z"
+ "ovos_releases_ref": "c76e34f036658ad2a2669b8326fe9e39109c6232",
+ "updated": "2026-11-17T01:44:50Z"
 }
