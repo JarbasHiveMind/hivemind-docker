@@ -14,7 +14,15 @@ function hivemind_set_identity() {
     local host=$3
     local port=$4
 
-    if ! hivemind-client set-identity --key "$key" --password "$password" --host "$host" --port "$port"; then
+    # The bridge builds its client with no identity, so it reads the shared
+    # file. hivemind-bus-client 1.3.0a1 and later write that file only with
+    # --shared; older releases have no --shared and write it by default.
+    local target=()
+    if hivemind-client --help 2>/dev/null | grep -q -- '--shared'; then
+        target=(--shared)
+    fi
+
+    if ! hivemind-client "${target[@]}" set-identity --key "$key" --password "$password" --host "$host" --port "$port"; then
         echo "Error: Failed to set Hivemind identity."
         return 1
     fi
