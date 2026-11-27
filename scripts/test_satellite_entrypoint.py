@@ -19,18 +19,30 @@ import tempfile
 import unittest
 from pathlib import Path
 
-ENTRYPOINT = Path(__file__).resolve().parent.parent / "satellite" / "files" / "entrypoint.sh"
+ROOT = Path(__file__).resolve().parent.parent
+ENTRYPOINT = ROOT / "satellite" / "files" / "entrypoint.sh"
+
+
+def write_cli_stub(bin_dir: Path, shared: bool) -> None:
+    """A hivemind-client that answers --help and records any other argv."""
+    options = "  --app TEXT\\n" + ("  --shared\\n" if shared else "")
+    stub = bin_dir / "hivemind-client"
+    stub.write_text('#!/bin/sh\n'
+                    f'case " $* " in *" --help "*) printf "Options:\\n{options}"; exit 0;; esac\n'
+                    'echo "CLI argv: $*"\n')
+    stub.chmod(stub.stat().st_mode | stat.S_IEXEC)
 
 
 class SatelliteEntrypointTests(unittest.TestCase):
     def run_entrypoint(self, identity: str = None, env: dict = None,
-                       names_itself: bool = True) -> tuple:
+                       names_itself: bool = True, cli_shared: bool = True) -> tuple:
         """Run the entrypoint in a fresh HOME with stubs on PATH.
 
         ``identity`` is "app", "shared", "both" or None. A stub hivemind-voice-sat
         records its argv and exits 0, so the entrypoint's exec is visible as its
         output. A stub python3 answers the launcher probe: exit 0 for a satellite
-        that names itself, 1 for an older one.
+        that names itself, 1 for an older one. A stub hivemind-client prints
+        help that lists --shared (hivemind-bus-client 1.3.0a1 and later) or not.
         """
         with tempfile.TemporaryDirectory() as tmp:
             home = Path(tmp) / "home"
@@ -48,6 +60,7 @@ class SatelliteEntrypointTests(unittest.TestCase):
             probe = bin_dir / "python3"
             probe.write_text(f'#!/bin/sh\nexit {0 if names_itself else 1}\n')
             probe.chmod(probe.stat().st_mode | stat.S_IEXEC)
+            write_cli_stub(bin_dir, cli_shared)
             # the sound-server probes must fail quietly: no pw-link, no pactl on PATH
             run_env = {"HOME": str(home), "PATH": f"{bin_dir}:/usr/bin:/bin"}
             run_env.update(env or {})
@@ -91,13 +104,19 @@ class SatelliteEntrypointTests(unittest.TestCase):
         self.assertNotIn("Notice", out)
         self.assertNotIn("--app", out)
 
-    def test_an_older_satellite_with_nothing_names_the_plain_set_identity(self):
+    def test_an_older_satellite_with_nothing_names_the_shared_set_identity(self):
         code, out = self.run_entrypoint(None, names_itself=False)
         self.assertEqual(code, 1, out)
         self.assertIn("no identity at", out)
         self.assertIn("hivemind/_identity.json and no credentials", out)
-        self.assertIn("hivemind_cli hivemind-client set-identity", out)
+        self.assertIn("hivemind_cli hivemind-client --shared set-identity", out)
         self.assertNotIn("--app", out)
+
+    def test_an_older_client_with_no_shared_flag_names_the_plain_set_identity(self):
+        code, out = self.run_entrypoint(None, names_itself=False, cli_shared=False)
+        self.assertEqual(code, 1, out)
+        self.assertIn("hivemind_cli hivemind-client set-identity", out)
+        self.assertNotIn("--shared", out)
 
     def test_credentials_in_the_environment_start_the_satellite_with_them(self):
         code, out = self.run_entrypoint(None, {"VOICE_SAT_KEY": "k", "VOICE_SAT_PASSWORD": "p",
@@ -127,6 +146,49 @@ class SatelliteEntrypointTests(unittest.TestCase):
                                                "VOICE_SAT_HOST": "ws://hub"})
         self.assertEqual(code, 0, out)
         self.assertIn("STUB argv: --key k --password p --host ws://hub\n", out)
+
+
+class BridgeEntrypointTests(unittest.TestCase):
+    """The chatroom and the matrix bot build their client with no identity.
+
+    That client reads the shared hivemind/_identity.json. hivemind-bus-client
+    1.3.0a1 and later write that file only with --shared, and refuse a bare
+    set-identity when the file does not exist (hivemind-websocket-client#295).
+    """
+
+    def run_entrypoint(self, image: str, cli_shared: bool) -> tuple:
+        with tempfile.TemporaryDirectory() as tmp:
+            bin_dir = Path(tmp) / "bin"
+            bin_dir.mkdir()
+            write_cli_stub(bin_dir, cli_shared)
+            for program in ("hivemind-flask-chatroom", "HiveMind-matrix"):
+                stub = bin_dir / program
+                stub.write_text('#!/bin/sh\necho "APP started"\n')
+                stub.chmod(stub.stat().st_mode | stat.S_IEXEC)
+            env = {"HOME": tmp, "PATH": f"{bin_dir}:/usr/bin:/bin",
+                   "SAT_KEY": "k", "SAT_PASSWORD": "p", "SAT_HOST": "ws://hub", "SAT_PORT": "5678",
+                   "VOICE_SAT_KEY": "k", "VOICE_SAT_PASSWORD": "p",
+                   "VOICE_SAT_HOST": "ws://hub", "VOICE_SAT_PORT": "5678"}
+            result = subprocess.run(["bash", str(ROOT / image / "files" / "entrypoint.sh")],
+                                    env=env, capture_output=True, text=True)
+            return result.returncode, result.stdout + result.stderr
+
+    def test_a_current_client_writes_the_shared_identity_with_the_flag(self):
+        for image in ("chatroom", "matrix-bot"):
+            with self.subTest(image=image):
+                code, out = self.run_entrypoint(image, cli_shared=True)
+                self.assertEqual(code, 0, out)
+                self.assertIn("CLI argv: --shared set-identity --key k --password p "
+                              "--host ws://hub --port 5678\n", out)
+                self.assertIn("APP started", out)
+
+    def test_an_older_client_writes_the_shared_identity_without_the_flag(self):
+        for image in ("chatroom", "matrix-bot"):
+            with self.subTest(image=image):
+                code, out = self.run_entrypoint(image, cli_shared=False)
+                self.assertEqual(code, 0, out)
+                self.assertIn("CLI argv: set-identity --key k --password p "
+                              "--host ws://hub --port 5678\n", out)
 
 
 class DockerfilePrereleaseTests(unittest.TestCase):

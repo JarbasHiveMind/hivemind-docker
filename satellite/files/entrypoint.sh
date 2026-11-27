@@ -17,7 +17,13 @@ if python3 -c 'import inspect, hivemind_voice_satellite.__main__ as m; raise Sys
     set_identity="hivemind-client --app voice-sat set-identity"
 else
     names_itself=0
-    set_identity="hivemind-client set-identity"
+    # An older satellite reads the shared file. hivemind-bus-client 1.3.0a1
+    # and later write it only with --shared; older releases have no --shared.
+    if hivemind-client --help 2>/dev/null | grep -q -- '--shared'; then
+        set_identity="hivemind-client --shared set-identity"
+    else
+        set_identity="hivemind-client set-identity"
+    fi
 fi
 
 # Install STT/TTS plugins, microphone plugins or others Python libraries via pip command when a setup.py exists
