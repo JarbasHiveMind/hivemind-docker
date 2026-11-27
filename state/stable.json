@@ -40,9 +40,9 @@
    "repo": "docker.io/smartgic/hivemind-base"
   },
   "chatroom": {
-   "built": "2026-11-24T18:48:57Z",
-   "constraints_ref": "a8fc67c97a120cdaa0022dddc66b1ee5319e2a48",
-   "digest": "sha256:d65639a1e5c12595b9b0c080db8b81e60014b7e5ae29baeda184dab2a8592ca2",
+   "built": "2026-11-27T02:25:59Z",
+   "constraints_ref": "8b0e05bf2855c7836df97f013d6326dafee0dd29",
+   "digest": "sha256:8aac4e2ad5b2a1df418fd9c065cadb1b363f110a5c5ff9b101bf8880cbe6e818",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-chatroom",
    "packages": [
     "CacheControl",
@@ -297,9 +297,9 @@
    "repo": "docker.io/smartgic/hivemind-listener"
   },
   "matrix-bot": {
-   "built": "2026-11-24T18:48:57Z",
-   "constraints_ref": "a8fc67c97a120cdaa0022dddc66b1ee5319e2a48",
-   "digest": "sha256:e6591631a079de80f5ce120a1cf8e973eb7aa6fa00d449e11e60206d3f23cc2e",
+   "built": "2026-11-27T02:25:59Z",
+   "constraints_ref": "8b0e05bf2855c7836df97f013d6326dafee0dd29",
+   "digest": "sha256:4238dd6196a8558dbfdd82e4170bd8effc267d972ef39fced955a51c4cf1308d",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-matrix-bot",
    "packages": [
     "CacheControl",
@@ -380,9 +380,9 @@
    "repo": "docker.io/smartgic/hivemind-matrix-bot"
   },
   "satellite": {
-   "built": "2026-11-24T18:48:57Z",
-   "constraints_ref": "a8fc67c97a120cdaa0022dddc66b1ee5319e2a48",
-   "digest": "sha256:dde9ca6bf4755c08509564d526554fdc481770bc7157c8f7b7c221fc42fb536b",
+   "built": "2026-11-27T02:25:59Z",
+   "constraints_ref": "8b0e05bf2855c7836df97f013d6326dafee0dd29",
+   "digest": "sha256:e9cf70b57bbdc348317730102ef32ccb58bc6d63d1a2f82c284a230dff63de2a",
    "mirror": "ghcr.io/jarbashivemind/hivemind-docker/hivemind-satellite",
    "packages": [
     "CacheControl",
@@ -632,6 +632,6 @@
    "repo": "docker.io/smartgic/hivemind-webchat"
   }
  },
- "ovos_releases_ref": "a8fc67c97a120cdaa0022dddc66b1ee5319e2a48",
- "updated": "2026-11-24T18:48:57Z"
+ "ovos_releases_ref": "8b0e05bf2855c7836df97f013d6326dafee0dd29",
+ "updated": "2026-11-27T02:25:59Z"
 }
