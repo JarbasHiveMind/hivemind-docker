@@ -4,4 +4,4 @@
 hivemind-webchat>=0.3.1a0
 
 # hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
-bitstring<5
+bitstring<6

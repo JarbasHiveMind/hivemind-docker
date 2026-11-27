@@ -3,4 +3,4 @@
 hivemind-matrix-bridge>=0.1.2a2
 
 # hivemind-bus-client 0.4.4 imports BitStream, removed in bitstring 5.
-bitstring<5
+bitstring<6
